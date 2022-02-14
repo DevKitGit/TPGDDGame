@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/styles.uss?fileID=7433441132597879392&amp;guid=e6b7a731ecb47f3489bfec642d3c4241&amp;type=3#styles" />
+    <ui:VisualElement style="flex-grow: 1; flex-direction: row; background-image: url(&apos;project://database/Assets/Mats/Textures/dawdaa.png?fileID=2800000&amp;guid=63ed7acafa1bfad4cb7d106c8086ff6a&amp;type=3#dawdaa&apos;);">
+        <ui:VisualElement style="flex-grow: 1;" />
+        <ui:VisualElement style="justify-content: flex-end;">
+            <ui:Button text="Start Campaign" display-tooltip-when-elided="true" name="start-campaign-button" class="tall-margin buttontheme" />
+            <ui:Button text="Options" display-tooltip-when-elided="true" name="options-button" class="tall-margin buttontheme" />
+            <ui:Button text="Credits" display-tooltip-when-elided="true" name="credits-button" class="tall-margin buttontheme" />
+            <ui:Button text="Quit to Desktop" display-tooltip-when-elided="true" name="quit-button" class="tall-margin buttontheme" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

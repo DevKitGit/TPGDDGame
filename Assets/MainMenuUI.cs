@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
-public class TurnManager : MonoBehaviour
+public class MainMenuUI : MonoBehaviour
 {
-    
-    public int turn { get; private set; }
-    
     // Start is called before the first frame update
+    private VisualElement _root;
     void Start()
     {
-        
-        
+        _root = GetComponent<UIDocument>().rootVisualElement;
+        var button = _root.Q<Button>("start-campaign-button");
+
     }
 
     // Update is called once per frame

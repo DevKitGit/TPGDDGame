@@ -1,0 +1,114 @@
+{
+    "name": "CombatInputActions",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "1c06f421-c113-4926-8ad6-033d4468320a",
+            "actions": [
+                {
+                    "name": "GridMove",
+                    "type": "PassThrough",
+                    "id": "9515cc3a-d577-4b41-be6a-65410bb4518e",
+                    "expectedControlType": "Vector2",
+                    "processors": "StickDeadzone(max=0.925)",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Ability West",
+                    "type": "Button",
+                    "id": "f44df744-74bd-4d9e-96d3-e28cb30d83be",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Ability East",
+                    "type": "Button",
+                    "id": "3ca29828-4168-418f-874b-f8beab797663",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Ability South",
+                    "type": "Button",
+                    "id": "1bc0ff39-22b0-4fc4-8f98-e3dd6f9a25f6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Ability North",
+                    "type": "Button",
+                    "id": "63d363c5-e353-4807-b3b3-e98fcb2e45bf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a3c774f0-b47c-4d43-8c31-4b59d6a9d796",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ability West",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "98f56d5e-1ccd-421c-985b-2585e4899694",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "StickDeadzone(min=0.3,max=1)",
+                    "groups": "",
+                    "action": "GridMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "55ac9619-b72f-4cbf-80b9-987cb5613d43",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ability East",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fd26a63a-69c6-4300-a8c4-14e93bec1229",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ability South",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f50a36e2-8989-4477-a550-ac1b4c687ac1",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ability North",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
