@@ -1,7 +1,0 @@
-@import url("/Assets/UI Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss");
-
-@import url("/Assets/styles.uss");
-
-
-
-VisualElement {}
