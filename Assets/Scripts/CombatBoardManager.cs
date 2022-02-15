@@ -16,7 +16,6 @@ public class CombatBoardManager : MonoBehaviour, PlayerControls.ICombatActions
 
     private void Start()
     {
-        PlayerControls = new PlayerControls();
         CreateBoard();
         _playerInputManager.onPlayerJoined += SetActivePlayer;
         PlayerControls.Combat.SetCallbacks(this);
@@ -25,6 +24,8 @@ public class CombatBoardManager : MonoBehaviour, PlayerControls.ICombatActions
     private void OnEnable()
     {
         _playerInputManager.onPlayerJoined += SetActivePlayer;
+        PlayerControls = new PlayerControls();
+
         PlayerControls.Enable();
     }
 
@@ -113,7 +114,7 @@ public class CombatBoardManager : MonoBehaviour, PlayerControls.ICombatActions
         if (context.performed)
         {
             var Direction = context.ReadValue<Vector2>();
-            Debug.Log(Direction.ToString());
+            //Debug.Log(Direction.ToString());
         }
     }
 
