@@ -1,15 +1,14 @@
 ﻿using UnityEngine;
 
-public class CombatCell
+public class CombatNode : Node
 {
-    public bool Walkable;
-    public float MovementCost;
     public Unit Unit;
 
-    public CombatCell(bool Walkable, float MovementCost)
+    
+    
+    public CombatNode(Vector3Int pos, bool Walkable, float MovementCost) : base(pos, Walkable, MovementCost)
     {
-        this.Walkable = Walkable;
-        this.MovementCost = MovementCost;
+        
     }
     
     public void onFocusEnter()

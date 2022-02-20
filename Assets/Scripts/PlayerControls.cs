@@ -28,13 +28,40 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
             ""id"": ""1c06f421-c113-4926-8ad6-033d4468320a"",
             ""actions"": [
                 {
-                    ""name"": ""GridMove"",
+                    ""name"": ""Move"",
                     ""type"": ""PassThrough"",
                     ""id"": ""9515cc3a-d577-4b41-be6a-65410bb4518e"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MoveReset"",
+                    ""type"": ""Button"",
+                    ""id"": ""215fd71c-053f-4c96-81c8-5e1b13bd3c5e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PointerMove"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""6f204efd-7e73-466a-9365-045b601a0873"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": ""StickDeadzone(max=0.925)"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""PointerToggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""62d49db2-52aa-4cb6-8c40-07b9f2999db3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Ability West"",
@@ -124,11 +151,11 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""2D Vector"",
                     ""id"": ""3a1cf1a4-9261-4c4d-a9c3-50c06b26d281"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""StickDeadzone(min=0.2)"",
                     ""groups"": """",
-                    ""action"": ""GridMove"",
+                    ""action"": ""Move"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -139,7 +166,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""GridMove"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -150,7 +177,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""GridMove"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -161,7 +188,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""GridMove"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -172,7 +199,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""GridMove"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -250,6 +277,83 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Consumable Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""d03c6315-a510-48d7-9572-7aa5586333d4"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PointerMove"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""5b543dc2-830e-4e2b-b31a-de97f39632fb"",
+                    ""path"": ""<Gamepad>/rightStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PointerMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""7a2b7cb8-b3d8-4608-827e-70400afe3f54"",
+                    ""path"": ""<Gamepad>/rightStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PointerMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""e10df92b-07af-4315-88da-2bad91215cdf"",
+                    ""path"": ""<Gamepad>/rightStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PointerMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""9ec541d3-fe47-43ba-9beb-0bd9643a33ef"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PointerMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""da2eb798-b584-4d61-bcd1-89b71e3eea2d"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PointerToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""58f06139-0f53-4758-881b-5112e3f9dd0b"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveReset"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -332,7 +436,10 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
 }");
         // Combat
         m_Combat = asset.FindActionMap("Combat", throwIfNotFound: true);
-        m_Combat_GridMove = m_Combat.FindAction("GridMove", throwIfNotFound: true);
+        m_Combat_Move = m_Combat.FindAction("Move", throwIfNotFound: true);
+        m_Combat_MoveReset = m_Combat.FindAction("MoveReset", throwIfNotFound: true);
+        m_Combat_PointerMove = m_Combat.FindAction("PointerMove", throwIfNotFound: true);
+        m_Combat_PointerToggle = m_Combat.FindAction("PointerToggle", throwIfNotFound: true);
         m_Combat_AbilityWest = m_Combat.FindAction("Ability West", throwIfNotFound: true);
         m_Combat_AbilityEast = m_Combat.FindAction("Ability East", throwIfNotFound: true);
         m_Combat_AbilitySouth = m_Combat.FindAction("Ability South", throwIfNotFound: true);
@@ -403,7 +510,10 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     // Combat
     private readonly InputActionMap m_Combat;
     private ICombatActions m_CombatActionsCallbackInterface;
-    private readonly InputAction m_Combat_GridMove;
+    private readonly InputAction m_Combat_Move;
+    private readonly InputAction m_Combat_MoveReset;
+    private readonly InputAction m_Combat_PointerMove;
+    private readonly InputAction m_Combat_PointerToggle;
     private readonly InputAction m_Combat_AbilityWest;
     private readonly InputAction m_Combat_AbilityEast;
     private readonly InputAction m_Combat_AbilitySouth;
@@ -416,7 +526,10 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     {
         private @PlayerControls m_Wrapper;
         public CombatActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @GridMove => m_Wrapper.m_Combat_GridMove;
+        public InputAction @Move => m_Wrapper.m_Combat_Move;
+        public InputAction @MoveReset => m_Wrapper.m_Combat_MoveReset;
+        public InputAction @PointerMove => m_Wrapper.m_Combat_PointerMove;
+        public InputAction @PointerToggle => m_Wrapper.m_Combat_PointerToggle;
         public InputAction @AbilityWest => m_Wrapper.m_Combat_AbilityWest;
         public InputAction @AbilityEast => m_Wrapper.m_Combat_AbilityEast;
         public InputAction @AbilitySouth => m_Wrapper.m_Combat_AbilitySouth;
@@ -434,9 +547,18 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         {
             if (m_Wrapper.m_CombatActionsCallbackInterface != null)
             {
-                @GridMove.started -= m_Wrapper.m_CombatActionsCallbackInterface.OnGridMove;
-                @GridMove.performed -= m_Wrapper.m_CombatActionsCallbackInterface.OnGridMove;
-                @GridMove.canceled -= m_Wrapper.m_CombatActionsCallbackInterface.OnGridMove;
+                @Move.started -= m_Wrapper.m_CombatActionsCallbackInterface.OnMove;
+                @Move.performed -= m_Wrapper.m_CombatActionsCallbackInterface.OnMove;
+                @Move.canceled -= m_Wrapper.m_CombatActionsCallbackInterface.OnMove;
+                @MoveReset.started -= m_Wrapper.m_CombatActionsCallbackInterface.OnMoveReset;
+                @MoveReset.performed -= m_Wrapper.m_CombatActionsCallbackInterface.OnMoveReset;
+                @MoveReset.canceled -= m_Wrapper.m_CombatActionsCallbackInterface.OnMoveReset;
+                @PointerMove.started -= m_Wrapper.m_CombatActionsCallbackInterface.OnPointerMove;
+                @PointerMove.performed -= m_Wrapper.m_CombatActionsCallbackInterface.OnPointerMove;
+                @PointerMove.canceled -= m_Wrapper.m_CombatActionsCallbackInterface.OnPointerMove;
+                @PointerToggle.started -= m_Wrapper.m_CombatActionsCallbackInterface.OnPointerToggle;
+                @PointerToggle.performed -= m_Wrapper.m_CombatActionsCallbackInterface.OnPointerToggle;
+                @PointerToggle.canceled -= m_Wrapper.m_CombatActionsCallbackInterface.OnPointerToggle;
                 @AbilityWest.started -= m_Wrapper.m_CombatActionsCallbackInterface.OnAbilityWest;
                 @AbilityWest.performed -= m_Wrapper.m_CombatActionsCallbackInterface.OnAbilityWest;
                 @AbilityWest.canceled -= m_Wrapper.m_CombatActionsCallbackInterface.OnAbilityWest;
@@ -465,9 +587,18 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
             m_Wrapper.m_CombatActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @GridMove.started += instance.OnGridMove;
-                @GridMove.performed += instance.OnGridMove;
-                @GridMove.canceled += instance.OnGridMove;
+                @Move.started += instance.OnMove;
+                @Move.performed += instance.OnMove;
+                @Move.canceled += instance.OnMove;
+                @MoveReset.started += instance.OnMoveReset;
+                @MoveReset.performed += instance.OnMoveReset;
+                @MoveReset.canceled += instance.OnMoveReset;
+                @PointerMove.started += instance.OnPointerMove;
+                @PointerMove.performed += instance.OnPointerMove;
+                @PointerMove.canceled += instance.OnPointerMove;
+                @PointerToggle.started += instance.OnPointerToggle;
+                @PointerToggle.performed += instance.OnPointerToggle;
+                @PointerToggle.canceled += instance.OnPointerToggle;
                 @AbilityWest.started += instance.OnAbilityWest;
                 @AbilityWest.performed += instance.OnAbilityWest;
                 @AbilityWest.canceled += instance.OnAbilityWest;
@@ -531,7 +662,10 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     public WorldActions @World => new WorldActions(this);
     public interface ICombatActions
     {
-        void OnGridMove(InputAction.CallbackContext context);
+        void OnMove(InputAction.CallbackContext context);
+        void OnMoveReset(InputAction.CallbackContext context);
+        void OnPointerMove(InputAction.CallbackContext context);
+        void OnPointerToggle(InputAction.CallbackContext context);
         void OnAbilityWest(InputAction.CallbackContext context);
         void OnAbilityEast(InputAction.CallbackContext context);
         void OnAbilitySouth(InputAction.CallbackContext context);

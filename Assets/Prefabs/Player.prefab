@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2823360459417705249}
   - component: {fileID: 428367157878888355}
   - component: {fileID: 4978341842479277271}
+  - component: {fileID: 3460645770985168426}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -130,8 +131,61 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 63d363c5-e353-4807-b3b3-e98fcb2e45bf
     m_ActionName: Player/Ability North[/DualSenseGamepadHID/buttonNorth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 215fd71c-053f-4c96-81c8-5e1b13bd3c5e
+    m_ActionName: Combat/MoveReset[/DualSenseGamepadHID/leftStickPress,/DualSenseGamepadHID1/leftStickPress,/DualSenseGamepadHID2/leftStickPress]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6f204efd-7e73-466a-9365-045b601a0873
+    m_ActionName: Combat/PointerMove[/DualSenseGamepadHID/rightStick/up,/DualSenseGamepadHID1/rightStick/up,/DualSenseGamepadHID2/rightStick/up,/DualSenseGamepadHID/rightStick/down,/DualSenseGamepadHID1/rightStick/down,/DualSenseGamepadHID2/rightStick/down,/DualSenseGamepadHID/rightStick/left,/DualSenseGamepadHID1/rightStick/left,/DualSenseGamepadHID2/rightStick/left,/DualSenseGamepadHID/rightStick/right,/DualSenseGamepadHID1/rightStick/right,/DualSenseGamepadHID2/rightStick/right]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 62d49db2-52aa-4cb6-8c40-07b9f2999db3
+    m_ActionName: Combat/PointerToggle[/DualSenseGamepadHID/rightStickPress,/DualSenseGamepadHID1/rightStickPress,/DualSenseGamepadHID2/rightStickPress]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0e04186b-3186-435f-963b-189f6ebd792c
+    m_ActionName: Combat/Consumable Left[/DualSenseGamepadHID/dpad/left,/DualSenseGamepadHID1/dpad/left,/DualSenseGamepadHID2/dpad/left]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 81fcdabe-b003-4c06-9209-962bfd5ef534
+    m_ActionName: Combat/Consumable Right[/DualSenseGamepadHID/dpad/right,/DualSenseGamepadHID1/dpad/right,/DualSenseGamepadHID2/dpad/right]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ec91c669-6600-429d-a404-af80f0f072a9
+    m_ActionName: Combat/Consumable Down[/DualSenseGamepadHID/dpad/down,/DualSenseGamepadHID1/dpad/down,/DualSenseGamepadHID2/dpad/down]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1337f60f-2510-456a-9400-360e4c969aca
+    m_ActionName: Combat/Consumable Up[/DualSenseGamepadHID/dpad/up,/DualSenseGamepadHID1/dpad/up,/DualSenseGamepadHID2/dpad/up]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: beaec202-bd07-4c4b-894f-924579ee89de
+    m_ActionName: World/GridMove[/DualSenseGamepadHID/leftStick/up,/DualSenseGamepadHID1/leftStick/up,/DualSenseGamepadHID2/leftStick/up,/DualSenseGamepadHID/leftStick/down,/DualSenseGamepadHID1/leftStick/down,/DualSenseGamepadHID2/leftStick/down,/DualSenseGamepadHID/leftStick/left,/DualSenseGamepadHID1/leftStick/left,/DualSenseGamepadHID2/leftStick/left,/DualSenseGamepadHID/leftStick/right,/DualSenseGamepadHID1/leftStick/right,/DualSenseGamepadHID2/leftStick/right]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: Combat
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &3460645770985168426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2365984120723740876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3833621fa164638b86cd2fa1c413ca2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: 
+  Sprite: {fileID: 0}
+  SpriteRenderer: {fileID: 0}
+  _str: 0
+  _dex: 0
+  _con: 0
+  _int: 0
+  _luck: 0
+  combatMoveSpeed: 0

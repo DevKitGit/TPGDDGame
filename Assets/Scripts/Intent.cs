@@ -8,7 +8,7 @@ public class Intent
     public bool hidden;
     
     //Which units are being targeted
-    public List<CombatCell> targets;
+    public List<CombatNode> targets;
 
     public List<Ability> abilities;
 }

@@ -1,18 +1,45 @@
 {
-    "name": "PlayerInputAtions",
+    "name": "PlayerControls",
     "maps": [
         {
             "name": "Combat",
             "id": "1c06f421-c113-4926-8ad6-033d4468320a",
             "actions": [
                 {
-                    "name": "GridMove",
+                    "name": "Move",
                     "type": "PassThrough",
                     "id": "9515cc3a-d577-4b41-be6a-65410bb4518e",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MoveReset",
+                    "type": "Button",
+                    "id": "215fd71c-053f-4c96-81c8-5e1b13bd3c5e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PointerMove",
+                    "type": "PassThrough",
+                    "id": "6f204efd-7e73-466a-9365-045b601a0873",
                     "expectedControlType": "Vector2",
                     "processors": "StickDeadzone(max=0.925)",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "PointerToggle",
+                    "type": "Button",
+                    "id": "62d49db2-52aa-4cb6-8c40-07b9f2999db3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Ability West",
@@ -102,11 +129,11 @@
                 {
                     "name": "2D Vector",
                     "id": "3a1cf1a4-9261-4c4d-a9c3-50c06b26d281",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=2)",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "StickDeadzone(min=0.2)",
                     "groups": "",
-                    "action": "GridMove",
+                    "action": "Move",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -117,7 +144,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "GridMove",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -128,7 +155,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "GridMove",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -139,7 +166,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "GridMove",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -150,7 +177,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "GridMove",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -228,6 +255,83 @@
                     "processors": "",
                     "groups": "",
                     "action": "Consumable Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "d03c6315-a510-48d7-9572-7aa5586333d4",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PointerMove",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "5b543dc2-830e-4e2b-b31a-de97f39632fb",
+                    "path": "<Gamepad>/rightStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PointerMove",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "7a2b7cb8-b3d8-4608-827e-70400afe3f54",
+                    "path": "<Gamepad>/rightStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PointerMove",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "e10df92b-07af-4315-88da-2bad91215cdf",
+                    "path": "<Gamepad>/rightStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PointerMove",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "9ec541d3-fe47-43ba-9beb-0bd9643a33ef",
+                    "path": "<Gamepad>/rightStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PointerMove",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "da2eb798-b584-4d61-bcd1-89b71e3eea2d",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PointerToggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "58f06139-0f53-4758-881b-5112e3f9dd0b",
+                    "path": "<Gamepad>/leftStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveReset",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
