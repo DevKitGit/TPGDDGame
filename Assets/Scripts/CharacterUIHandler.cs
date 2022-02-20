@@ -18,7 +18,7 @@ public class CharacterUIHandler : MonoBehaviour
             abilitySlots[i].SetAbility(player.abilities[i]);
         }
         characterArtSlot.sprite = player.Sprite;
-        characterName.text = player.Name;
+        characterName.text = player.UnitName;
         characterName.ForceMeshUpdate();
         characterDescription.text = player.description;
         characterDescription.ForceMeshUpdate();

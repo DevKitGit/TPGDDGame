@@ -1,17 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public abstract class Unit : MonoBehaviour
+public abstract class Unit : MonoBehaviour, ITurnResponder
 {
-    public string Name;
-    public Intent Intent;
+    public bool TurnDone { get; set; }
+    public abstract Intent Intent { get; set; }
+    public int TurnPriority { get; set; }
+    public abstract TaskCompletionSource<bool> Tcs { get; set; }
+    public abstract Task<bool> DoTurn();
+
+    public string UnitName;
     public Sprite Sprite;
     public SpriteRenderer SpriteRenderer;
     public int STR, DEX, CON, INT, LCK;
     public float combatMoveSpeed;
-    public List<Vector2Int> position;
+    public Vector3Int position;
     public List<Ability> abilities;
     public String description;
 
@@ -22,19 +28,11 @@ public abstract class Unit : MonoBehaviour
         Neutral,
         None
     } 
-
-    public void OnEnable()
-    {
-        CombatManager.OnTurnStart += OnTurnStart;
-        CombatManager.OnTurnEnd += OnTurnEnd;
-    }
-
-    public abstract void OnTurnStart();
-    public abstract void OnTurnEnd();
     
     public void OnChangeDirection()
     {
         SpriteRenderer.flipX = !SpriteRenderer.flipX;
+        
     }
     
     /*
@@ -105,4 +103,5 @@ public abstract class Unit : MonoBehaviour
         _eRngDmg = ((_ememyStr / CON) * _enemyWpnDmg) + _enemyLevel;
         _eMgcDmg = ((_enemyInt / CON) * _enemySpellDmg) + (_enemyLevel / 2);
     }
+
 }
