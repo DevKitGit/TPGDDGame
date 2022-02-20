@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public abstract class Unit : MonoBehaviour
 {
@@ -8,21 +9,28 @@ public abstract class Unit : MonoBehaviour
     public Intent Intent;
     public Sprite Sprite;
     public SpriteRenderer SpriteRenderer;
-    public int _str, _dex, _con, _int, _luck;
+    public int STR, DEX, CON, INT, LCK;
     public float combatMoveSpeed;
-    
-    public abstract void OnTurnEnter();
+    public List<Vector2Int> position;
+    public List<Ability> abilities;
+    public String description;
 
-    public abstract void OnTurnEnd();
+    public enum Faction
+    {
+        Players,
+        AI,
+        Neutral,
+        None
+    } 
 
     public void OnEnable()
     {
-        CombatManager.OnTurnStart += onTurnStart;
+        CombatManager.OnTurnStart += OnTurnStart;
         CombatManager.OnTurnEnd += OnTurnEnd;
     }
 
-    public abstract void onTurnStart();
-    public abstract void onTurnEnd();
+    public abstract void OnTurnStart();
+    public abstract void OnTurnEnd();
     
     public void OnChangeDirection()
     {
@@ -77,7 +85,7 @@ public abstract class Unit : MonoBehaviour
     private void _statCalc()
     {
         //lifeforce calculation
-        _lifeForce = (_classHPBase + (_con / 2)) + _playerLevel;
+        _lifeForce = (_classHPBase + (CON / 2)) + _playerLevel;
         _enemyLifeForce = (_enemyHPBase + (_enemyCon / 2) + _enemyLevel);
         
     }
@@ -85,16 +93,16 @@ public abstract class Unit : MonoBehaviour
     private void _playerDmgHandler()
     {
         //player damage calculation
-        _pPhysDmg = ((_str / _enemyCon) * _playerWpnDmg) - _enemyArmor;
-        _pRngDmg = ((_dex / _enemyCon) * _playerWpnDmg) - _enemyArmor;
-        _pMgcDmg = ((_int / _enemyCon) * _playerSpellDmg) + (_playerLevel / 2);
+        _pPhysDmg = ((STR / _enemyCon) * _playerWpnDmg) - _enemyArmor;
+        _pRngDmg = ((DEX / _enemyCon) * _playerWpnDmg) - _enemyArmor;
+        _pMgcDmg = ((INT / _enemyCon) * _playerSpellDmg) + (_playerLevel / 2);
     }
 
     private void _enemyDmgHandler()
     {
         //enemy damage calculation
-        _ePhysDmg = ((_ememyStr / _con) * _enemyWpnDmg) + _enemyLevel;
-        _eRngDmg = ((_ememyStr / _con) * _enemyWpnDmg) + _enemyLevel;
-        _eMgcDmg = ((_enemyInt / _con) * _enemySpellDmg) + (_enemyLevel / 2);
+        _ePhysDmg = ((_ememyStr / CON) * _enemyWpnDmg) + _enemyLevel;
+        _eRngDmg = ((_ememyStr / CON) * _enemyWpnDmg) + _enemyLevel;
+        _eMgcDmg = ((_enemyInt / CON) * _enemySpellDmg) + (_enemyLevel / 2);
     }
 }

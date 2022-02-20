@@ -8,13 +8,32 @@ public class CombatManager : MonoBehaviour
 {
     //The current turn number
     public int TurnNumber { get; private set; } = 1;
+
+    public GameObject playerBasePrefab;
+    public List<Player> players;
     
+    public List<Enemy> enemies;
     //The TMP displaying the current turn number;
     public TextMeshProUGUI TurnNumberHolder;
-    
+    public List<Vector2Int> playerStartingIndices;
     public static event Action OnTurnStart = delegate {  };
     public static event Action OnTurnEnd = delegate{  };
-    
+
+    private void InitializeCombat(CombatTemplate template)
+    {
+        
+    }
+
+    private void SpawnEnemies(List<Enemy> enemies)
+    {
+        foreach (var enemy in enemies)
+        {
+        }
+    }
+    private void UpdateIntents()
+    {
+        
+    }
     private void StartTurn()
     {
         IncrementTurnText();
@@ -30,21 +49,5 @@ public class CombatManager : MonoBehaviour
         TurnNumber += 1;
         TurnNumberHolder.text = TurnNumber.ToString();
         TurnNumberHolder.ForceMeshUpdate();
-    }
-
-    private void OnEnable()
-    {
-        OnTurnStart += StartTurn;
-        OnTurnEnd += EndTurn;
-    }
-    private void OnDestroy()
-    {
-        OnTurnStart -= StartTurn;
-        OnTurnEnd -= EndTurn;
-    }
-    private void OnDisable()
-    {
-        OnTurnStart -= StartTurn;
-        OnTurnEnd -= EndTurn;
     }
 }
