@@ -6,12 +6,14 @@ using UnityEngine.U2D;
 
 public class AbilitySlot : MonoBehaviour
 {
-    [SerializeField] public SpriteRenderer _spriteRenderer;
-    [SerializeField] public TextMeshProUGUI _abilityCost;
-    [SerializeField] public TextMeshProUGUI _abilityCharges;
+    [SerializeField] private Ability _slottedAbility;
+    [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private TextMeshProUGUI _abilityCost;
+    [SerializeField] private TextMeshProUGUI _abilityCharges;
     
     public void SetAbility(Ability ability)
     {
+        _slottedAbility = ability;
         _spriteRenderer.sprite = ability.sprite;
         _abilityCost.text = ability.ActionCost.ToString();
         _abilityCharges.text = $"{ability.ChargesCurrent.ToString()}/{ability.ChargesMax.ToString()}";

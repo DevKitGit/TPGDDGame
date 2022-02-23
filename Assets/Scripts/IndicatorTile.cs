@@ -18,7 +18,6 @@ public class IndicatorTile : MonoBehaviour
         Ally,
         Default
     }
-
     public void SetIndicator(Indicator indicator)
     {
         _spriteRenderer.sprite = indicator switch
