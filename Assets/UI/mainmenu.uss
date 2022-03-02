@@ -1,0 +1,160 @@
+.menu {
+    flex-grow: 5;
+    flex-basis: auto;
+    flex-direction: column;
+    transition-duration: 1s;
+    transition-timing-function: ease-in-out-circ;
+    transition-property: translate;
+    translate: 0 0;
+    overflow: visible;
+    visibility: visible;
+    display: none;
+    justify-content: center;
+    position: relative;
+}
+
+.main-buttons {
+    font-size: 55px;
+    margin-left: 3px;
+    margin-right: 36px;
+    margin-top: 1px;
+    margin-bottom: 34px;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    -unity-font: none;
+    -unity-font-definition: url('project://database/Assets/Mats/Fonts/GridkingRegular-77vw%20SDF%201.asset?fileID=11400000&guid=10bdcaa98b52b7e4fb5566c8d4d7acca&type=2#GridkingRegular-77vw SDF 1');
+    transition-property: translate;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-in-out-circ;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    flex-direction: row-reverse;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0.38);
+    color: rgb(255, 255, 255);
+    -unity-text-outline-color: rgb(255, 255, 255);
+    -unity-text-align: upper-right;
+    overflow: visible;
+}
+
+.menu--move-left {
+    translate: 100% 0;
+    opacity: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+.menu--move-right {
+    translate: -100% 0;
+    opacity: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+.main-buttons:focus {
+    flex-direction: row-reverse;
+    translate: -84px 0;
+}
+
+.main-buttons:hover {
+    flex-direction: row-reverse;
+    translate: -84px 0;
+}
+
+.slider-style {
+    color: rgb(255, 0, 0);
+    align-items: flex-start;
+    flex-grow: 0;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    flex-shrink: 1;
+}
+
+.slider-style .unity-label {
+    color: rgb(255, 255, 255);
+    font-size: 44px;
+    display: flex;
+}
+
+.slider-style .unity-base-slider__dragger {
+    flex-direction: row;
+    flex-wrap: wrap;
+    position: relative;
+    flex-grow: 1;
+    flex-shrink: 0;
+    align-items: flex-end;
+    justify-content: space-around;
+    height: 30px;
+    width: 30px;
+    top: 4.5px;
+    right: 0;
+    margin-right: 0;
+    padding-right: 0;
+    margin-bottom: 0;
+}
+
+.slider-style .unity-base-slider__tracker {
+    height: 30px;
+    align-items: auto;
+    position: relative;
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+.slider-style .unity-base-slider__drag-container {
+    margin-top: -25px;
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    height: 50px;
+    margin-bottom: 19px;
+}
+
+.main-scroll-left {
+    transition-duration: 1s;
+    transition-timing-function: ease-in-out-circ;
+    translate: -66.6666% 0;
+}
+
+.main-scroll-right {
+    transition-duration: 1s;
+    transition-timing-function: ease-in-out-circ;
+    translate: 66.6666% 0;
+}
+
+.main-scroll-center {
+    transition-duration: 1s;
+    transition-timing-function: ease-in-out-circ;
+    translate: 0 0;
+}
+
+.main-selector {
+    font-size: 55px;
+    margin-left: 3px;
+    margin-right: 36px;
+    margin-top: 1px;
+    margin-bottom: 34px;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    -unity-font: none;
+    -unity-font-definition: url('project://database/Assets/Mats/Fonts/GridkingRegular-77vw%20SDF%201.asset?fileID=11400000&guid=10bdcaa98b52b7e4fb5566c8d4d7acca&type=2#GridkingRegular-77vw SDF 1');
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    flex-direction: column;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0.38);
+    color: rgb(255, 255, 255);
+    -unity-text-outline-color: rgb(255, 255, 255);
+    -unity-text-align: upper-right;
+    overflow: visible;
+}

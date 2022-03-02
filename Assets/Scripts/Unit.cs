@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,6 +8,8 @@ using UnityEngine.InputSystem;
 public abstract class Unit : MonoBehaviour, ITurnResponder
 {
     public bool TurnDone { get; set; }
+    public bool Alive { get; set; }
+    public Faction IFaction { get; set; }
     public abstract Intent Intent { get; set; }
     public int TurnPriority { get; set; }
     public abstract TaskCompletionSource<bool> Tcs { get; set; }
@@ -17,18 +20,103 @@ public abstract class Unit : MonoBehaviour, ITurnResponder
     public SpriteRenderer SpriteRenderer;
     public int STR, DEX, CON, INT, LCK;
     public float combatMoveSpeed;
-    public Vector3Int position;
+    public Vector3Int tilePosition;
     public List<Ability> abilities;
     public String description;
-
+    public List<Effect> appliedEffects;
+    public bool MovePhaseThisTurn;
+    public bool ActionPhaseThisTurn;
     public enum Faction
     {
         Players,
         AI,
         Neutral,
         None
-    } 
-    
+    }
+
+    public void BeginTurn()
+    {
+        MovePhaseThisTurn = true;
+        ActionPhaseThisTurn = true;
+    }
+
+    public void ReceiveEffect(List<Effect> effects)
+    {
+        foreach (var effect in effects)
+        {
+            if (!effect.applyImmediately)
+            {
+                appliedEffects.Add(effect);
+            }
+            else
+            {
+                ApplySingleEffect(effect);
+                appliedEffects.Add(effect);
+            }
+        }
+    }
+    public void ApplyEffects()
+    {
+        foreach (var effect in appliedEffects.Where(effect => effect.TurnsLeft >= 1))
+        {
+            effect.TurnsLeft--;
+            ApplySingleEffect(effect);
+        }
+        appliedEffects.RemoveAll(effect => effect.TurnsLeft <= 0);
+    }
+
+    public void ApplySingleEffect(Effect effect)
+    {
+        switch (effect.type)
+        {
+            case Effect.Type.None:
+                break;
+            case Effect.Type.Physical:
+                break;
+            case Effect.Type.Magic:
+                break;
+            case Effect.Type.Stun:
+                MovePhaseThisTurn = false;
+                ActionPhaseThisTurn = false;
+                break;
+            case Effect.Type.Silence:
+                ActionPhaseThisTurn = false;
+                break;
+            case Effect.Type.Slow:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        VisualizeEffect(effect);
+    }
+
+    private void VisualizeEffect(Effect effect)
+    {
+        switch (effect.type)
+        {
+            case Effect.Type.None:
+                break;
+            case Effect.Type.Physical:
+                //Damage take animation
+                break;
+            case Effect.Type.Magic:
+                //Damage take animation
+                break;
+            case Effect.Type.Stun:
+                //Show a stun icon
+                break;
+            case Effect.Type.Silence:
+                //Show a silence icon
+                break;
+            case Effect.Type.Slow:
+                //Show a slow icon
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
     public void OnChangeDirection()
     {
         SpriteRenderer.flipX = !SpriteRenderer.flipX;

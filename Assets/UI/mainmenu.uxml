@@ -1,12 +1,24 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <Style src="project://database/Assets/styles.uss?fileID=7433441132597879392&amp;guid=e6b7a731ecb47f3489bfec642d3c4241&amp;type=3#styles" />
-    <ui:VisualElement style="flex-grow: 1; flex-direction: row; background-image: url(&apos;project://database/Assets/Mats/Textures/dawdaa.png?fileID=2800000&amp;guid=63ed7acafa1bfad4cb7d106c8086ff6a&amp;type=3#dawdaa&apos;);">
-        <ui:VisualElement style="flex-grow: 1;" />
-        <ui:VisualElement style="justify-content: flex-end;">
-            <ui:Button text="Start Campaign" display-tooltip-when-elided="true" name="start-campaign-button" class="tall-margin buttontheme" />
-            <ui:Button text="Options" display-tooltip-when-elided="true" name="options-button" class="tall-margin buttontheme" />
-            <ui:Button text="Credits" display-tooltip-when-elided="true" name="credits-button" class="tall-margin buttontheme" />
-            <ui:Button text="Quit to Desktop" display-tooltip-when-elided="true" name="quit-button" class="tall-margin buttontheme" />
+    <Style src="project://database/Assets/UI/mainmenu.uss?fileID=7433441132597879392&amp;guid=4a57aa1c9513539479999a2840280d0e&amp;type=3#mainmenu" />
+    <ui:VisualElement>
+        <ui:VisualElement name="menu-main" style="display: flex; flex-direction: row-reverse; flex-grow: 1; justify-content: flex-start; overflow: visible; visibility: visible;">
+            <ui:VisualElement style="flex-direction: column-reverse; align-items: flex-end; justify-content: flex-start;">
+                <ui:Button text="Exit" name="quit-button" class="tall-margin buttontheme main-buttons" />
+                <ui:Button text="Credits" name="credits-button" class="tall-margin buttontheme main-buttons" />
+                <ui:Button text="Options" name="options-button" class="tall-margin buttontheme main-buttons" />
+                <ui:Button text="Start Campaign" name="start-campaign-button" class="tall-margin buttontheme main-buttons" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="menu-campaign" class="menu" />
+        <ui:VisualElement name="menu-options" class="menu" style="display: none; flex-direction: column; align-items: center; justify-content: center; flex-grow: 1; flex-wrap: wrap; visibility: visible; overflow: hidden;">
+            <ui:VisualElement style="align-items: stretch; justify-content: space-around; flex-direction: column; flex-grow: 0; min-width: 31%; min-height: auto;">
+                <ui:Label text="Options" display-tooltip-when-elided="true" style="-unity-text-align: middle-center; font-size: 49px; -unity-font-definition: url(&apos;project://database/Assets/Mats/Fonts/GridkingRegular-77vw%20SDF%201.asset?fileID=11400000&amp;guid=10bdcaa98b52b7e4fb5566c8d4d7acca&amp;type=2#GridkingRegular-77vw SDF 1&apos;);" />
+                <ui:SliderInt picking-mode="Ignore" label="Music volume" high-value="100" value="60" name="volume-music" tabindex="1" class="slider-style main-selector" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; flex-direction: column;" />
+                <ui:SliderInt label="Master Volume" high-value="100" value="50" name="volume-master" class="slider-style main-selector" style="margin-left: 0; margin-right: 0; margin-top: 20px; margin-bottom: 20px;" />
+                <ui:Toggle label="Vibrations " value="true" name="toggle-vibrations" focusable="false" class="main-selector" style="font-size: 36px; left: 31%; width: 37%; flex-direction: row;" />
+                <ui:Toggle label="Subtitles" value="true" name="toggle-subtitles" focusable="false" class="main-selector" style="font-size: 36px; left: 31%; width: 37%; -unity-font-definition: url(&apos;project://database/Assets/Mats/Fonts/GridkingRegular-77vw%20SDF%201.asset?fileID=11400000&amp;guid=10bdcaa98b52b7e4fb5566c8d4d7acca&amp;type=2#GridkingRegular-77vw SDF 1&apos;); flex-direction: row;" />
+                <ui:Button text="Back to main menu" name="button-options-to-main" enable-rich-text="true" class="tall-margin buttontheme main-selector" style="width: 85%; right: auto; left: 8%;" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

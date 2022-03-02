@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2365984120723740876}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.09721728, y: -0.41193566, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -180,12 +180,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3833621fa164638b86cd2fa1c413ca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
+  UnitName: 
   Sprite: {fileID: 0}
   SpriteRenderer: {fileID: 0}
-  _str: 0
-  _dex: 0
-  _con: 0
-  _int: 0
-  _luck: 0
-  combatMoveSpeed: 0
+  STR: 0
+  DEX: 0
+  CON: 0
+  INT: 0
+  LCK: 0
+  combatMoveSpeed: 4
+  tilePosition: {x: 3, y: 1, z: 0}
+  description: 
+  MovePhaseThisTurn: 0
+  ActionPhaseThisTurn: 0
+  _cbm: {fileID: 0}
+  playerInputManager: {fileID: 0}
+  pointerMode: 0
+  _horitonzalBorder: 0.15
+  _verticalBorder: 0.25
+  _inputPollRate: 10
+  _indicatorTilePosition: {x: 0, y: 0, z: 0}
+  currentlyHoveredTile: {x: 0, y: 0, z: 0}

@@ -13,14 +13,14 @@ public class CombatManager : MonoBehaviour
 {
     private Tilemap _tilemap;
     //The current turn number
-    public int TurnNumber { get; private set; } = 1;
+    public int TurnNumber { get; private set; } = 0;
     public List<ITurnResponder> TurnResponders;
     public List<ITurnResponder> CurrentTurn;
     public List<Intent> Intents;
     //The TMP displaying the current turn number;
     public TextMeshProUGUI TurnNumberHolder;
+    public List<GameObject> enemies;
 
-    
     private void InitializeCombat(List<Player> players, CombatTemplate template)
     {
         _tilemap = FindObjectOfType<Tilemap>();
@@ -29,32 +29,66 @@ public class CombatManager : MonoBehaviour
         players.ForEach(p => TurnResponders.Add(p.GetComponent<ITurnResponder>()));
         template.enemies.ForEach(e => TurnResponders.Add(e.GetComponent<ITurnResponder>()));
         SpawnEnemies(template);
-        
+        TurnMainLoop();
     }
-
+    
     private void SpawnEnemies(CombatTemplate combatTemplate)
     {
         for (var i = 0; i < combatTemplate.enemies.Count; i++)
         {
-            combatTemplate.enemies[i].position = combatTemplate.enemyPositions[i];
-            Instantiate(combatTemplate.enemies[i], _tilemap.CellToWorld(combatTemplate.enemies[i].position), quaternion.identity);
+            combatTemplate.enemies[i].tilePosition = combatTemplate.enemyTilePositions[i];
+            Instantiate(combatTemplate.enemies[i], _tilemap.CellToWorld(combatTemplate.enemies[i].tilePosition), quaternion.identity);
         }
     }
 
-    private async void StartTurn()
+    private async void TurnMainLoop()
+    {
+        while (true)
+        {
+            BeginTurn();
+            UpdateIntents();
+            var factionWon = Unit.Faction.None;
+            while (TurnResponders.FindAll(t => t.Alive && !t.TurnDone).Count > 0)
+            {
+                TurnResponders[0].TurnDone = await TurnResponders[0].DoTurn();
+                factionWon = CheckGameOutcome();
+                if (factionWon != Unit.Faction.None)
+                {
+                    break;
+                }
+
+                UpdateIntents();
+            }
+
+            if (factionWon != Unit.Faction.None)
+            {
+                EndGame();
+                return;
+            }
+
+            EndTurn();
+        }
+    }
+
+    private void BeginTurn()
     {
         IncrementTurnText();
-        UpdateIntents();
-        while (Intents.Count > 0)
-        {
-            CheckGameOutcome();
-            var turnFinished = await TurnResponders[0].DoTurn();
-            if (turnFinished)
-            {
-            
-            }
-        }
-        EndTurn();
+        TurnResponders.FindAll(t => t.Alive).ForEach(t=> t.TurnDone = false);
+    }
+    
+    private void UpdateIntents()
+    {
+        
+    }
+
+    private void EndTurn()
+    {
+        
+    }
+    
+    private void EndGame()
+    {
+        
     }
     
     private void IncrementTurnText()
@@ -63,28 +97,34 @@ public class CombatManager : MonoBehaviour
         TurnNumberHolder.text = TurnNumber.ToString();
         TurnNumberHolder.ForceMeshUpdate();
     }
-    
-    private void UpdateIntents()
+    private Unit.Faction CheckGameOutcome()
     {
-        
-    }
+        //did the player lose?
+        var playersAlive = 0;
+        var AIAlive = 0;
+        foreach (var turnResponder in TurnResponders.Where(turnResponder => turnResponder.Alive))
+        {
+            switch (turnResponder.IFaction)
+            {
+                case Unit.Faction.AI:
+                    AIAlive++;
+                    break;
+                case Unit.Faction.Players:
+                    playersAlive++;
+                    break;
+            }
+        }
 
+        if (playersAlive == 0)
+        {
+            return Unit.Faction.AI;
+        }
 
-    private void CheckGameOutcome()
-    {
-        
-    }
+        if (AIAlive == 0)
+        {
+            return Unit.Faction.Players;
+        }
 
-    private void EndTurn()
-    {
-
-    }
-    
-    private TaskCompletionSource<float> _tcs;
-
-    private Task<float> DoTurn()
-    {
-        _tcs = new TaskCompletionSource<float>();
-        return _tcs.Task;
+        return Unit.Faction.None;
     }
 }
