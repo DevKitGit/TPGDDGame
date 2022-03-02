@@ -55,7 +55,12 @@ public class CombatBoardManager : MonoBehaviour
         {
             for (int x = 0; x < _tileMapDimensions.x; x++)
             {
-                var walkable = !(x == _tileMapDimensions.x-1 && y % 2 == 1);
+                var walkable = x == _tileMapDimensions.x-1 && y % 2 == 1;
+                if (walkable)
+                {
+                    board.Add(null);
+                    continue;
+                }
                 var tileGO = Instantiate(_TilePrefab.gameObject, _tileMap.CellToWorld(new Vector3Int(x, y, 0)), quaternion.identity,gameObject.transform);
                 tileGO.name = $"Tile,{x},{y}";
                 board.Add(new Tile(new Vector3Int(x,y,0),true,tileGO.GetComponent<IndicatorTile>()));

@@ -188,8 +188,8 @@ MonoBehaviour:
   CON: 0
   INT: 0
   LCK: 0
-  combatMoveSpeed: 9
-  tilePosition: {x: 3, y: 7, z: 0}
+  combatMoveSpeed: 4
+  tilePosition: {x: 3, y: 1, z: 0}
   description: 
   MovePhaseThisTurn: 0
   ActionPhaseThisTurn: 0
