@@ -40,6 +40,27 @@ public class Player : Unit, PlayerControls.ICombatActions
         SetupPlayerForCombat(tilePosition);
     }
 
+    public void PopulateData(PlayerSo playerSo)
+    {
+        name = playerSo.name;
+        icon = playerSo.icon;
+        STR = playerSo.STR;
+        DEX = playerSo.DEX;
+        CON = playerSo.CON;
+        INT = playerSo.INT;
+        LCK = playerSo.LCK;
+        LifeForce = playerSo.lifeForce;
+        combatMoveSpeed = playerSo.moveSpeed;
+        AllyFaction = playerSo.allyFaction;
+        EnemyFaction = playerSo.enemyFaction;
+        abilities = playerSo.abilities;
+
+    }
+
+    public void SetInputController(PlayerInput playerInput)
+    {
+        _playerInput = playerInput;
+    }
 
     public void EndTurn()
     {
@@ -71,6 +92,8 @@ public class Player : Unit, PlayerControls.ICombatActions
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        if (!CheckIfValidInput(context)) return;
+
         if (context.performed)
         {
             var value = context.ReadValue<Vector2>();
@@ -81,6 +104,8 @@ public class Player : Unit, PlayerControls.ICombatActions
 
     public void OnMoveReset(InputAction.CallbackContext context)
     {
+        if (!CheckIfValidInput(context)) return;
+
         if (context.performed)
         {
             _indicatorTilePosition = tilePosition;
@@ -91,6 +116,8 @@ public class Player : Unit, PlayerControls.ICombatActions
 
     public void OnPointerMove(InputAction.CallbackContext context)
     {
+        if (!CheckIfValidInput(context)) return;
+
         if (context.performed)
         {
             var Direction = context.ReadValue<Vector2>();
@@ -99,6 +126,8 @@ public class Player : Unit, PlayerControls.ICombatActions
 
     public void OnPointerToggle(InputAction.CallbackContext context)
     {
+        if (!CheckIfValidInput(context)) return;
+
         if (context.performed)
         {
             pointerMode = !pointerMode;
@@ -108,6 +137,8 @@ public class Player : Unit, PlayerControls.ICombatActions
 
     public void OnAbilityWest(InputAction.CallbackContext context)
     {
+        if (!CheckIfValidInput(context)) return;
+
         if (context.performed)
         {
             Debug.Log("Ability West");
@@ -116,6 +147,8 @@ public class Player : Unit, PlayerControls.ICombatActions
 
     public void OnAbilityEast(InputAction.CallbackContext context)
     {
+        if (!CheckIfValidInput(context)) return;
+
         if (context.performed)
         {
             Debug.Log("Ability East");
@@ -124,6 +157,8 @@ public class Player : Unit, PlayerControls.ICombatActions
 
     public void OnAbilitySouth(InputAction.CallbackContext context)
     {
+        if (!CheckIfValidInput(context)) return;
+
         if (context.performed)
         {
             Debug.Log("Ability South");
@@ -132,6 +167,8 @@ public class Player : Unit, PlayerControls.ICombatActions
 
     public void OnAbilityNorth(InputAction.CallbackContext context)
     {
+        if (!CheckIfValidInput(context)) return;
+
         if (context.performed)
         {
             Debug.Log("Ability North");
@@ -141,6 +178,8 @@ public class Player : Unit, PlayerControls.ICombatActions
 
     public void OnConsumableLeft(InputAction.CallbackContext context)
     {
+        if (!CheckIfValidInput(context)) return;
+
         if (context.performed)
         {
             Debug.Log("Consumable left");
@@ -149,6 +188,8 @@ public class Player : Unit, PlayerControls.ICombatActions
 
     public void OnConsumableRight(InputAction.CallbackContext context)
     {
+        if (!CheckIfValidInput(context)) return;
+
         if (context.performed)
         {
             Debug.Log("Consumable right");
@@ -157,6 +198,8 @@ public class Player : Unit, PlayerControls.ICombatActions
 
     public void OnConsumableDown(InputAction.CallbackContext context)
     {
+        if (!CheckIfValidInput(context)) return;
+
         if (context.performed)
         {
             Debug.Log("Consumable down");
@@ -164,6 +207,7 @@ public class Player : Unit, PlayerControls.ICombatActions
     }
     public void OnConsumableUp(InputAction.CallbackContext context)
     {
+        if (!CheckIfValidInput(context)) return;
         if (context.performed)
         {
             Debug.Log("Consumable up");
@@ -254,5 +298,11 @@ public class Player : Unit, PlayerControls.ICombatActions
         _indicatorTilePosition = cellPosition;
         tilesWithinReach = _cbm.Pathfinder.FindWalkableTiles(tilePosition, combatMoveSpeed);
         MakeTilesWithinReach(true);
+    }
+
+    private bool CheckIfValidInput(InputAction.CallbackContext context)
+    {
+        if (_playerInput == null || _playerInput.devices.Count == 0) return false;
+        return _playerInput.devices[0].allControls.Contains(context.control);
     }
 }

@@ -21,7 +21,7 @@ public class CombatManager : MonoBehaviour
     public TextMeshProUGUI TurnNumberHolder;
     public List<GameObject> enemies;
 
-    private void InitializeCombat(List<Player> players, CombatTemplate template)
+    public void InitializeCombat(List<Player> players, CombatTemplate template)
     {
         _tilemap = FindObjectOfType<Tilemap>();
         TurnNumber = 1;
@@ -104,7 +104,7 @@ public class CombatManager : MonoBehaviour
         var AIAlive = 0;
         foreach (var turnResponder in TurnResponders.Where(turnResponder => turnResponder.Alive))
         {
-            switch (turnResponder.IFaction)
+            switch (turnResponder.AllyFaction)
             {
                 case Unit.Faction.AI:
                     AIAlive++;

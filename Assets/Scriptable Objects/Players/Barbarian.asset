@@ -12,13 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f4e998fd5c14d2e9da3c46d1f63e38f, type: 3}
   m_Name: Barbarian
   m_EditorClassIdentifier: 
-  Name: 
-  Icon: {fileID: 0}
-  Str: 0
-  Dex: 0
-  Con: 0
-  Int: 0
-  Luck: 0
-  Lifeforce: 0
-  MoveSpeed: 0
-  Armor: 0
+  name: Barbarian
+  icon: {fileID: 0}
+  STR: 0
+  DEX: 0
+  CON: 0
+  INT: 0
+  LCK: 0
+  lifeForce: 0
+  armor: 0
+  moveSpeed: 4
+  allyFaction: 0
+  enemyFaction: 1

@@ -14,15 +14,15 @@
 }
 
 .main-buttons {
-    font-size: 55px;
-    margin-left: 3px;
+    font-size: 40px;
+    margin-left: 0;
     margin-right: 36px;
-    margin-top: 1px;
-    margin-bottom: 34px;
-    padding-left: 6px;
-    padding-right: 6px;
-    padding-top: 1px;
-    padding-bottom: 1px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-top: 31px;
+    padding-bottom: 25px;
     -unity-font: none;
     -unity-font-definition: url('project://database/Assets/Mats/Fonts/GridkingRegular-77vw%20SDF%201.asset?fileID=11400000&guid=10bdcaa98b52b7e4fb5566c8d4d7acca&type=2#GridkingRegular-77vw SDF 1');
     transition-property: translate;
@@ -33,36 +33,25 @@
     border-top-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgba(0, 0, 0, 0);
     flex-direction: row-reverse;
-    -unity-background-image-tint-color: rgb(255, 255, 255);
-    background-color: rgba(0, 0, 0, 0.38);
     color: rgb(255, 255, 255);
     -unity-text-outline-color: rgb(255, 255, 255);
-    -unity-text-align: upper-right;
+    -unity-text-align: middle-center;
     overflow: visible;
-}
-
-.menu--move-left {
-    translate: 100% 0;
-    opacity: 1;
-    display: flex;
-    overflow: hidden;
-}
-
-.menu--move-right {
-    translate: -100% 0;
-    opacity: 1;
-    display: flex;
-    overflow: hidden;
+    background-image: url('project://database/Assets/Mats/Textures/Title_selector_with_black_runes.png?fileID=2800000&guid=c3bd335b6c1920846abd54102bff6921&type=3#Title_selector_with_black_runes');
+    -unity-background-scale-mode: scale-and-crop;
+    background-color: rgba(0, 0, 0, 0);
+    white-space: normal;
+    -unity-font-style: normal;
 }
 
 .main-buttons:focus {
     flex-direction: row-reverse;
-    translate: -84px 0;
+    background-image: url('project://database/Assets/Mats/Textures/Title_selector_with_blue_runes%201.png?fileID=2800000&guid=1c0b0f32539c6a84c8652520b274d8d7&type=3#Title_selector_with_blue_runes 1');
 }
 
 .main-buttons:hover {
     flex-direction: row-reverse;
-    translate: -84px 0;
+    background-image: url('project://database/Assets/Mats/Textures/Title_selector_with_blue_runes%201.png?fileID=2800000&guid=1c0b0f32539c6a84c8652520b274d8d7&type=3#Title_selector_with_blue_runes 1');
 }
 
 .slider-style {

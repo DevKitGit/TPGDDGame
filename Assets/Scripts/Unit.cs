@@ -9,13 +9,17 @@ public abstract class Unit : MonoBehaviour, ITurnResponder
 {
     public bool TurnDone { get; set; }
     public bool Alive { get; set; }
-    public Faction IFaction { get; set; }
+    public Faction AllyFaction { get; set; }
+    public Faction EnemyFaction { get; set; }
+    public int LifeForce { get; set; }
+
     public abstract Intent Intent { get; set; }
     public int TurnPriority { get; set; }
     public abstract TaskCompletionSource<bool> Tcs { get; set; }
     public abstract Task<bool> DoTurn();
 
     public string UnitName;
+    public Sprite icon;
     public Sprite Sprite;
     public SpriteRenderer SpriteRenderer;
     public int STR, DEX, CON, INT, LCK;
@@ -26,6 +30,7 @@ public abstract class Unit : MonoBehaviour, ITurnResponder
     public List<Effect> appliedEffects;
     public bool MovePhaseThisTurn;
     public bool ActionPhaseThisTurn;
+    
     public enum Faction
     {
         Players,
