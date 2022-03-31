@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Data", menuName = "Scriptable Objects/Player", order = 1)]
 public class PlayerSo : ScriptableObject
 {
-    public string name;
+    public string displayName;
     public Sprite icon;
     public int STR, DEX, CON, INT, LCK;
     public int lifeForce, armor;

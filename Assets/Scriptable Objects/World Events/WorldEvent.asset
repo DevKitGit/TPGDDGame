@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: WorldEvent
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
-  headline: 
-  text: 
-  choice1: 3
+  choice1: 0
+  choice1text: 
   choice2: 3
-  choice3: 3
+  choice2text: 
+  choice3: 4
+  choice3text: 
   CombatTemplate: {fileID: 0}
+  nextChoice: {fileID: 0}

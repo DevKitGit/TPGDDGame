@@ -20,7 +20,7 @@ public class TRGameManager : MonoBehaviour
         {
             var newPlayer = Instantiate(_playerHolder.gameObject, Vector3.zero, quaternion.identity).GetComponent<Player>();
             newPlayer.PopulateData(player);
-            newPlayer.gameObject.name = player.name;
+            newPlayer.gameObject.name = player.displayName;
             _players.Add(newPlayer);
         }
     }
