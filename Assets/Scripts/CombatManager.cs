@@ -28,18 +28,19 @@ public class CombatManager : MonoBehaviour
         TurnResponders = new List<ITurnResponder>();
         players.ForEach(p => TurnResponders.Add(p.GetComponent<ITurnResponder>()));
         template.enemies.ForEach(e => TurnResponders.Add(e.GetComponent<ITurnResponder>()));
-        SpawnEnemies(template);
+        //SpawnEnemies(template);
         TurnMainLoop();
     }
     
-    private void SpawnEnemies(CombatTemplate combatTemplate)
+    /*private void SpawnEnemies(CombatTemplate combatTemplate)
     {
         for (var i = 0; i < combatTemplate.enemies.Count; i++)
         {
+            
             combatTemplate.enemies[i].tilePosition = combatTemplate.enemyTilePositions[i];
             Instantiate(combatTemplate.enemies[i], _tilemap.CellToWorld(combatTemplate.enemies[i].tilePosition), quaternion.identity);
         }
-    }
+    }*/
 
     private async void TurnMainLoop()
     {

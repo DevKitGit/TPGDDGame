@@ -96,7 +96,7 @@ MonoBehaviour:
     m_ActionName: CombatUI/UINavigate
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: 70b5833b-9b34-4058-97d0-e322baac39e9
+  m_DefaultActionMap: e9f9dee0-a9aa-4767-9a76-d9c41e5d1166
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &-6205135707571457910
@@ -111,48 +111,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e72dbd3c28d2654d97501fcaf32ff5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UiNavigate:
-    m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 
-    m_ActionName: 
-  UISubmit:
-    m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 
-    m_ActionName: 
-  UiCancel:
-    m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 
-    m_ActionName: 
-  PlayerJump:
-    m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 
-    m_ActionName: 
-  PlayerMoveA:
-    m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 
-    m_ActionName: 
-  PlayerMoveB:
-    m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 
-    m_ActionName: 
-  PlayerGrabA:
-    m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 
-    m_ActionName: 
-  PlayerGrabB:
-    m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 
-    m_ActionName: 
-  PlayerPause:
-    m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 
-    m_ActionName: 

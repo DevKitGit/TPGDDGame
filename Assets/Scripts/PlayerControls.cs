@@ -24,6 +24,94 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     ""name"": ""PlayerControls"",
     ""maps"": [
         {
+            ""name"": ""World"",
+            ""id"": ""e9f9dee0-a9aa-4767-9a76-d9c41e5d1166"",
+            ""actions"": [
+                {
+                    ""name"": ""WorldNavigate"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""b59c91de-0974-4fc3-98f8-49e0d8f60155"",
+                    ""expectedControlType"": ""Stick"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""WorldInteract"",
+                    ""type"": ""Button"",
+                    ""id"": ""9653583a-568c-411f-b838-d8d0d55d8b3e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WorldCancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""a0aed153-ee0f-487b-9e44-4268a3e2f64f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WorldUIEnter"",
+                    ""type"": ""Button"",
+                    ""id"": ""0ae73409-054a-48a9-a9f7-c914830802a2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""952ef4da-7313-4e2e-9954-227b59d93379"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": ""StickDeadzone"",
+                    ""groups"": """",
+                    ""action"": ""WorldNavigate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1f8444ab-0b6d-4409-8a2e-b5086c5e9767"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WorldInteract"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e0326727-ed7f-420e-949b-4f29835c46f1"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WorldCancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ab54c805-8eac-4648-baba-3a2d57200931"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WorldUIEnter"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""Combat"",
             ""id"": ""1c06f421-c113-4926-8ad6-033d4468320a"",
             ""actions"": [
@@ -31,7 +119,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""name"": ""CombatMove"",
                     ""type"": ""PassThrough"",
                     ""id"": ""9515cc3a-d577-4b41-be6a-65410bb4518e"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": ""Stick"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -79,7 +167,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""id"": ""3a1cf1a4-9261-4c4d-a9c3-50c06b26d281"",
                     ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
-                    ""processors"": ""StickDeadzone(min=0.2)"",
+                    ""processors"": ""StickDeadzone"",
                     ""groups"": """",
                     ""action"": ""CombatMove"",
                     ""isComposite"": true,
@@ -624,142 +712,16 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
-        },
-        {
-            ""name"": ""World"",
-            ""id"": ""e9f9dee0-a9aa-4767-9a76-d9c41e5d1166"",
-            ""actions"": [
-                {
-                    ""name"": ""WorldNavigate"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""b59c91de-0974-4fc3-98f8-49e0d8f60155"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""WorldInteract"",
-                    ""type"": ""Button"",
-                    ""id"": ""9653583a-568c-411f-b838-d8d0d55d8b3e"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""WorldCancel"",
-                    ""type"": ""Button"",
-                    ""id"": ""a0aed153-ee0f-487b-9e44-4268a3e2f64f"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""WorldUIEnter"",
-                    ""type"": ""Button"",
-                    ""id"": ""0ae73409-054a-48a9-a9f7-c914830802a2"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": ""2D Vector"",
-                    ""id"": ""d20639c5-7fd0-4628-b481-8bfd9b35aa56"",
-                    ""path"": ""2DVector(mode=2)"",
-                    ""interactions"": """",
-                    ""processors"": ""StickDeadzone(min=0.2)"",
-                    ""groups"": """",
-                    ""action"": ""WorldNavigate"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""cba27d53-5fcf-47f4-84c5-8ec073f1d88d"",
-                    ""path"": ""<Gamepad>/leftStick/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""WorldNavigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""cd9e432b-c5f7-41b6-b5d3-13c39598e5a5"",
-                    ""path"": ""<Gamepad>/leftStick/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""WorldNavigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""76c6af0a-478a-407d-b479-7c50a03caae2"",
-                    ""path"": ""<Gamepad>/leftStick/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""WorldNavigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""feaa7d99-6b92-4780-8281-a85347b6126d"",
-                    ""path"": ""<Gamepad>/leftStick/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""WorldNavigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1f8444ab-0b6d-4409-8a2e-b5086c5e9767"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""WorldInteract"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e0326727-ed7f-420e-949b-4f29835c46f1"",
-                    ""path"": ""<Gamepad>/buttonEast"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""WorldCancel"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ab54c805-8eac-4648-baba-3a2d57200931"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""WorldUIEnter"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
         }
     ],
     ""controlSchemes"": []
 }");
+        // World
+        m_World = asset.FindActionMap("World", throwIfNotFound: true);
+        m_World_WorldNavigate = m_World.FindAction("WorldNavigate", throwIfNotFound: true);
+        m_World_WorldInteract = m_World.FindAction("WorldInteract", throwIfNotFound: true);
+        m_World_WorldCancel = m_World.FindAction("WorldCancel", throwIfNotFound: true);
+        m_World_WorldUIEnter = m_World.FindAction("WorldUIEnter", throwIfNotFound: true);
         // Combat
         m_Combat = asset.FindActionMap("Combat", throwIfNotFound: true);
         m_Combat_CombatMove = m_Combat.FindAction("CombatMove", throwIfNotFound: true);
@@ -785,12 +747,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_UI_UITrackedDevicePosition = m_UI.FindAction("UITrackedDevicePosition", throwIfNotFound: true);
         m_UI_UITrackedDeviceOrientation = m_UI.FindAction("UITrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_UIJoin = m_UI.FindAction("UIJoin", throwIfNotFound: true);
-        // World
-        m_World = asset.FindActionMap("World", throwIfNotFound: true);
-        m_World_WorldNavigate = m_World.FindAction("WorldNavigate", throwIfNotFound: true);
-        m_World_WorldInteract = m_World.FindAction("WorldInteract", throwIfNotFound: true);
-        m_World_WorldCancel = m_World.FindAction("WorldCancel", throwIfNotFound: true);
-        m_World_WorldUIEnter = m_World.FindAction("WorldUIEnter", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -846,6 +802,63 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     {
         return asset.FindBinding(bindingMask, out action);
     }
+
+    // World
+    private readonly InputActionMap m_World;
+    private IWorldActions m_WorldActionsCallbackInterface;
+    private readonly InputAction m_World_WorldNavigate;
+    private readonly InputAction m_World_WorldInteract;
+    private readonly InputAction m_World_WorldCancel;
+    private readonly InputAction m_World_WorldUIEnter;
+    public struct WorldActions
+    {
+        private @PlayerControls m_Wrapper;
+        public WorldActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @WorldNavigate => m_Wrapper.m_World_WorldNavigate;
+        public InputAction @WorldInteract => m_Wrapper.m_World_WorldInteract;
+        public InputAction @WorldCancel => m_Wrapper.m_World_WorldCancel;
+        public InputAction @WorldUIEnter => m_Wrapper.m_World_WorldUIEnter;
+        public InputActionMap Get() { return m_Wrapper.m_World; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(WorldActions set) { return set.Get(); }
+        public void SetCallbacks(IWorldActions instance)
+        {
+            if (m_Wrapper.m_WorldActionsCallbackInterface != null)
+            {
+                @WorldNavigate.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldNavigate;
+                @WorldNavigate.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldNavigate;
+                @WorldNavigate.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldNavigate;
+                @WorldInteract.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldInteract;
+                @WorldInteract.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldInteract;
+                @WorldInteract.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldInteract;
+                @WorldCancel.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldCancel;
+                @WorldCancel.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldCancel;
+                @WorldCancel.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldCancel;
+                @WorldUIEnter.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldUIEnter;
+                @WorldUIEnter.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldUIEnter;
+                @WorldUIEnter.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldUIEnter;
+            }
+            m_Wrapper.m_WorldActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @WorldNavigate.started += instance.OnWorldNavigate;
+                @WorldNavigate.performed += instance.OnWorldNavigate;
+                @WorldNavigate.canceled += instance.OnWorldNavigate;
+                @WorldInteract.started += instance.OnWorldInteract;
+                @WorldInteract.performed += instance.OnWorldInteract;
+                @WorldInteract.canceled += instance.OnWorldInteract;
+                @WorldCancel.started += instance.OnWorldCancel;
+                @WorldCancel.performed += instance.OnWorldCancel;
+                @WorldCancel.canceled += instance.OnWorldCancel;
+                @WorldUIEnter.started += instance.OnWorldUIEnter;
+                @WorldUIEnter.performed += instance.OnWorldUIEnter;
+                @WorldUIEnter.canceled += instance.OnWorldUIEnter;
+            }
+        }
+    }
+    public WorldActions @World => new WorldActions(this);
 
     // Combat
     private readonly InputActionMap m_Combat;
@@ -1073,63 +1086,13 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
-
-    // World
-    private readonly InputActionMap m_World;
-    private IWorldActions m_WorldActionsCallbackInterface;
-    private readonly InputAction m_World_WorldNavigate;
-    private readonly InputAction m_World_WorldInteract;
-    private readonly InputAction m_World_WorldCancel;
-    private readonly InputAction m_World_WorldUIEnter;
-    public struct WorldActions
+    public interface IWorldActions
     {
-        private @PlayerControls m_Wrapper;
-        public WorldActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @WorldNavigate => m_Wrapper.m_World_WorldNavigate;
-        public InputAction @WorldInteract => m_Wrapper.m_World_WorldInteract;
-        public InputAction @WorldCancel => m_Wrapper.m_World_WorldCancel;
-        public InputAction @WorldUIEnter => m_Wrapper.m_World_WorldUIEnter;
-        public InputActionMap Get() { return m_Wrapper.m_World; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(WorldActions set) { return set.Get(); }
-        public void SetCallbacks(IWorldActions instance)
-        {
-            if (m_Wrapper.m_WorldActionsCallbackInterface != null)
-            {
-                @WorldNavigate.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldNavigate;
-                @WorldNavigate.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldNavigate;
-                @WorldNavigate.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldNavigate;
-                @WorldInteract.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldInteract;
-                @WorldInteract.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldInteract;
-                @WorldInteract.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldInteract;
-                @WorldCancel.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldCancel;
-                @WorldCancel.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldCancel;
-                @WorldCancel.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldCancel;
-                @WorldUIEnter.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldUIEnter;
-                @WorldUIEnter.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldUIEnter;
-                @WorldUIEnter.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnWorldUIEnter;
-            }
-            m_Wrapper.m_WorldActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @WorldNavigate.started += instance.OnWorldNavigate;
-                @WorldNavigate.performed += instance.OnWorldNavigate;
-                @WorldNavigate.canceled += instance.OnWorldNavigate;
-                @WorldInteract.started += instance.OnWorldInteract;
-                @WorldInteract.performed += instance.OnWorldInteract;
-                @WorldInteract.canceled += instance.OnWorldInteract;
-                @WorldCancel.started += instance.OnWorldCancel;
-                @WorldCancel.performed += instance.OnWorldCancel;
-                @WorldCancel.canceled += instance.OnWorldCancel;
-                @WorldUIEnter.started += instance.OnWorldUIEnter;
-                @WorldUIEnter.performed += instance.OnWorldUIEnter;
-                @WorldUIEnter.canceled += instance.OnWorldUIEnter;
-            }
-        }
+        void OnWorldNavigate(InputAction.CallbackContext context);
+        void OnWorldInteract(InputAction.CallbackContext context);
+        void OnWorldCancel(InputAction.CallbackContext context);
+        void OnWorldUIEnter(InputAction.CallbackContext context);
     }
-    public WorldActions @World => new WorldActions(this);
     public interface ICombatActions
     {
         void OnCombatMove(InputAction.CallbackContext context);
@@ -1157,12 +1120,5 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnUITrackedDevicePosition(InputAction.CallbackContext context);
         void OnUITrackedDeviceOrientation(InputAction.CallbackContext context);
         void OnUIJoin(InputAction.CallbackContext context);
-    }
-    public interface IWorldActions
-    {
-        void OnWorldNavigate(InputAction.CallbackContext context);
-        void OnWorldInteract(InputAction.CallbackContext context);
-        void OnWorldCancel(InputAction.CallbackContext context);
-        void OnWorldUIEnter(InputAction.CallbackContext context);
     }
 }

@@ -2,6 +2,94 @@
     "name": "PlayerControls",
     "maps": [
         {
+            "name": "World",
+            "id": "e9f9dee0-a9aa-4767-9a76-d9c41e5d1166",
+            "actions": [
+                {
+                    "name": "WorldNavigate",
+                    "type": "PassThrough",
+                    "id": "b59c91de-0974-4fc3-98f8-49e0d8f60155",
+                    "expectedControlType": "Stick",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "WorldInteract",
+                    "type": "Button",
+                    "id": "9653583a-568c-411f-b838-d8d0d55d8b3e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "WorldCancel",
+                    "type": "Button",
+                    "id": "a0aed153-ee0f-487b-9e44-4268a3e2f64f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "WorldUIEnter",
+                    "type": "Button",
+                    "id": "0ae73409-054a-48a9-a9f7-c914830802a2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "952ef4da-7313-4e2e-9954-227b59d93379",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "StickDeadzone",
+                    "groups": "",
+                    "action": "WorldNavigate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1f8444ab-0b6d-4409-8a2e-b5086c5e9767",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WorldInteract",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e0326727-ed7f-420e-949b-4f29835c46f1",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WorldCancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ab54c805-8eac-4648-baba-3a2d57200931",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WorldUIEnter",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
             "name": "Combat",
             "id": "1c06f421-c113-4926-8ad6-033d4468320a",
             "actions": [
@@ -9,7 +97,7 @@
                     "name": "CombatMove",
                     "type": "PassThrough",
                     "id": "9515cc3a-d577-4b41-be6a-65410bb4518e",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "Stick",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -57,7 +145,7 @@
                     "id": "3a1cf1a4-9261-4c4d-a9c3-50c06b26d281",
                     "path": "2DVector(mode=2)",
                     "interactions": "",
-                    "processors": "StickDeadzone(min=0.2)",
+                    "processors": "StickDeadzone",
                     "groups": "",
                     "action": "CombatMove",
                     "isComposite": true,
@@ -598,138 +686,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "UIJoin",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "World",
-            "id": "e9f9dee0-a9aa-4767-9a76-d9c41e5d1166",
-            "actions": [
-                {
-                    "name": "WorldNavigate",
-                    "type": "PassThrough",
-                    "id": "b59c91de-0974-4fc3-98f8-49e0d8f60155",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "WorldInteract",
-                    "type": "Button",
-                    "id": "9653583a-568c-411f-b838-d8d0d55d8b3e",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "WorldCancel",
-                    "type": "Button",
-                    "id": "a0aed153-ee0f-487b-9e44-4268a3e2f64f",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "WorldUIEnter",
-                    "type": "Button",
-                    "id": "0ae73409-054a-48a9-a9f7-c914830802a2",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "2D Vector",
-                    "id": "d20639c5-7fd0-4628-b481-8bfd9b35aa56",
-                    "path": "2DVector(mode=2)",
-                    "interactions": "",
-                    "processors": "StickDeadzone(min=0.2)",
-                    "groups": "",
-                    "action": "WorldNavigate",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "cba27d53-5fcf-47f4-84c5-8ec073f1d88d",
-                    "path": "<Gamepad>/leftStick/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "WorldNavigate",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "cd9e432b-c5f7-41b6-b5d3-13c39598e5a5",
-                    "path": "<Gamepad>/leftStick/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "WorldNavigate",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "76c6af0a-478a-407d-b479-7c50a03caae2",
-                    "path": "<Gamepad>/leftStick/left",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "WorldNavigate",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "feaa7d99-6b92-4780-8281-a85347b6126d",
-                    "path": "<Gamepad>/leftStick/right",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "WorldNavigate",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "1f8444ab-0b6d-4409-8a2e-b5086c5e9767",
-                    "path": "<Gamepad>/buttonSouth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "WorldInteract",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e0326727-ed7f-420e-949b-4f29835c46f1",
-                    "path": "<Gamepad>/buttonEast",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "WorldCancel",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ab54c805-8eac-4648-baba-3a2d57200931",
-                    "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "WorldUIEnter",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
