@@ -5,12 +5,11 @@ using System.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
-public class Player : Unit, PlayerControls.ICombatActions
+public class Player : Unit
 {
     
     public CombatBoardManager _cbm;
     public PlayerControls playerControls;
-    public PlayerInputManager playerInputManager;
     public bool pointerMode = false;
     private float _timeSinceLastMove;
     private Vector2 moveValue = Vector2.zero;
@@ -27,19 +26,64 @@ public class Player : Unit, PlayerControls.ICombatActions
     public Vector3Int currentlyHoveredTile;
     public Stack<Tile> _currentPath = new Stack<Tile>();
     public List<Tile> tilesWithinReach = new List<Tile>();
+    private Dictionary<Guid, Action<InputAction.CallbackContext>> _lookup = new();
+    private PlayerControls.ICombatActions _combatActionsImplementation;
 
     private void Start()
     {
         _playerInput = GetComponent<PlayerInput>();
-        playerInputManager = PlayerInputManager.instance;
-        _timeSinceLastMove = Time.time;
-        playerControls = new PlayerControls(); 
-        playerControls.Combat.SetCallbacks(this);
-        playerControls.Enable();
         _cbm = FindObjectOfType<CombatBoardManager>();
+
+        _timeSinceLastMove = Time.time;
+        _playerInput.onActionTriggered += OnActionTriggered;
         SetupPlayerForCombat(tilePosition);
+        InitControlLookup();
     }
 
+    private void InitControlLookup()
+    {
+        playerControls = new PlayerControls();
+        playerControls.Disable();
+        AssignActions();
+    }
+    private void AssignActions()
+    {
+        
+    }
+    
+    private void SetActionWithID(InputAction inputActionGuidRef, Action<InputAction.CallbackContext> action )
+    {
+        _lookup[inputActionGuidRef.id] = action;
+    }
+    
+    private void OnActionTriggered(InputAction.CallbackContext obj)
+    {
+        if (_lookup.TryGetValue(obj.action.id, out var action))
+        {
+            action.Invoke(obj);
+        }
+    }
+    public void PopulateData(PlayerSo playerSo)
+    {
+        name = playerSo.displayName;
+        icon = playerSo.icon;
+        STR = playerSo.STR;
+        DEX = playerSo.DEX;
+        CON = playerSo.CON;
+        INT = playerSo.INT;
+        LCK = playerSo.LCK;
+        LifeForce = playerSo.lifeForce;
+        combatMoveSpeed = playerSo.moveSpeed;
+        AllyFaction = playerSo.allyFaction;
+        EnemyFaction = playerSo.enemyFaction;
+        abilities = playerSo.abilities;
+
+    }
+
+    public void SetInputController(PlayerInput playerInput)
+    {
+        _playerInput = playerInput;
+    }
 
     public void EndTurn()
     {
@@ -106,106 +150,39 @@ public class Player : Unit, PlayerControls.ICombatActions
         }
     }
 
-    public void OnAbilityWest(InputAction.CallbackContext context)
+    public void OnInteract(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            Debug.Log("Ability West");
-        }
+        throw new NotImplementedException();
     }
 
-    public void OnAbilityEast(InputAction.CallbackContext context)
+    public void OnBack(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            Debug.Log("Ability East");
-        }
+        throw new NotImplementedException();
     }
-
-    public void OnAbilitySouth(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            Debug.Log("Ability South");
-        }
-    }
-
-    public void OnAbilityNorth(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            Debug.Log("Ability North");
-        }
-
-    }
-
-    public void OnConsumableLeft(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            Debug.Log("Consumable left");
-        }
-    }
-
-    public void OnConsumableRight(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            Debug.Log("Consumable right");
-        }
-    }
-
-    public void OnConsumableDown(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            Debug.Log("Consumable down");
-        }
-    }
-    public void OnConsumableUp(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            Debug.Log("Consumable up");
-        }
-    }
+    
     public Vector3Int InterpolateGridDirection(Vector3Int origin, Vector3 inputDirection)
     {
         inputDirection.Normalize();
 
         var horizontal = math.abs(inputDirection.x) > _horitonzalBorder ? Math.Sign(inputDirection.x) : 0;
         var vertical = math.abs(inputDirection.y) > _verticalBorder ? Math.Sign(inputDirection.y) : 0;
-        
         var isRowOdd = origin.y % 2 == 0;
-        //if a direction is diagonal
-        if (Mathf.Abs(horizontal) + math.abs(vertical) > 1f) 
-        {
-            if (horizontal+vertical==2)
-            {
-                return isRowOdd ? CombatBoardManager.DEG60_ODD : CombatBoardManager.DEG60_EVEN;
-            } 
-            if (horizontal+vertical==-2)
-            {
-                return isRowOdd ? CombatBoardManager.DEG240_ODD : CombatBoardManager.DEG240_EVEN;
-            }if (horizontal < 0)
-            {
-                return isRowOdd ? CombatBoardManager.DEG120_ODD : CombatBoardManager.DEG120_EVEN;
-            }
-            return isRowOdd ? CombatBoardManager.DEG300_ODD : CombatBoardManager.DEG300_EVEN;
-        }
-        return new(horizontal,vertical,0);
         
+        if (!(Mathf.Abs(horizontal) + math.abs(vertical) > 1f)) return new(horizontal, vertical, 0);
+        switch (horizontal+vertical)
+        {
+            case 2:
+                return isRowOdd ? CombatBoardManager.DEG60_ODD : CombatBoardManager.DEG60_EVEN;
+            case -2:
+                return isRowOdd ? CombatBoardManager.DEG240_ODD : CombatBoardManager.DEG240_EVEN;
+        }
+        if (horizontal < 0)
+        {
+            return isRowOdd ? CombatBoardManager.DEG120_ODD : CombatBoardManager.DEG120_EVEN;
+        }
+        return isRowOdd ? CombatBoardManager.DEG300_ODD : CombatBoardManager.DEG300_EVEN;
+
     }
-    private void OnEnable()
-    {
-        playerInputManager = FindObjectOfType<PlayerInputManager>();
-    }
-    private void OnDisable()
-    {
-        playerInputManager = FindObjectOfType<PlayerInputManager>();
-        playerControls.Disable();
-    }
-    
     private void FixedUpdate()
     {
         MoveGridIndicator();
@@ -233,7 +210,6 @@ public class Player : Unit, PlayerControls.ICombatActions
         {
             _currentPath.ToList().ForEach(tile => tile.IndicatorTile.SetIndicator(IndicatorTile.Indicator.Default));
             _currentPath.Clear();
-                    
         }
         tilesWithinReach = _cbm.Pathfinder.FindWalkableTiles(tilePosition, combatMoveSpeed);
         MakeTilesWithinReach(true);

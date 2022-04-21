@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement name="navigation" style="align-items: flex-end; margin-left: 20px; margin-right: 20px; margin-top: 20px; margin-bottom: 20px; padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px;">
+        <ui:VisualElement style="max-width: 200px;">
+            <ui:Button text="BACK" display-tooltip-when-elided="true" name="back" class="button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

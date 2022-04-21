@@ -1,0 +1,45 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS_Styles.uss?fileID=7433441132597879392&amp;guid=4754db1e383ca1840a08995a8f176a45&amp;type=3#USS_Styles" />
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); opacity: 1;">
+        <ui:VisualElement name="main-menu" style="flex-grow: 1; display: none;">
+            <ui:VisualElement style="flex-grow: 1; flex-direction: row-reverse;">
+                <ui:VisualElement style="align-items: flex-end; justify-content: flex-end; padding-left: 35px; padding-right: 35px; padding-top: 35px; padding-bottom: 35px;">
+                    <ui:Button text="NEW GAME" display-tooltip-when-elided="true" name="newgame" class="button" />
+                    <ui:Button text="OPTIONS" display-tooltip-when-elided="true" name="options" tabindex="1" class="button" />
+                    <ui:Button text="EXIT" display-tooltip-when-elided="true" name="exit" tabindex="2" class="button" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="options-menu" style="flex-grow: 1; display: none;">
+            <ui:VisualElement style="flex-grow: 1; flex-direction: row; align-items: center;">
+                <ui:VisualElement style="align-items: flex-end; justify-content: flex-end; padding-left: 35px; padding-right: 35px; padding-top: 35px; padding-bottom: 35px;">
+                    <ui:Toggle label="SOUND EFFECTS" name="sfx" class="button" style="-unity-font-definition: url(&apos;project://database/Assets/Fonts/Cocogoose%20Pro-trial%20SDF.asset?fileID=11400000&amp;guid=591bb84013da72a46a1ddca5c987e5e5&amp;type=2#Cocogoose Pro-trial SDF&apos;);" />
+                    <ui:Toggle label="MUSIC" name="music" tabindex="1" class="button" style="-unity-font-definition: url(&apos;project://database/Assets/Fonts/Cocogoose%20Pro-trial%20SDF.asset?fileID=11400000&amp;guid=591bb84013da72a46a1ddca5c987e5e5&amp;type=2#Cocogoose Pro-trial SDF&apos;);" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="character-select-menu" style="flex-grow: 1; display: flex;">
+            <ui:Label text="PICK A HERO" display-tooltip-when-elided="true" class="header text" style="-unity-font: url(&apos;project://database/Assets/Fonts/Cocogoose%20Pro-trial.ttf?fileID=12800000&amp;guid=08d723038aff1fa4ab1dfca86332d645&amp;type=3#Cocogoose Pro-trial&apos;); -unity-font-definition: url(&apos;project://database/Assets/Fonts/Cocogoose%20Pro-trial%20SDF.asset?fileID=11400000&amp;guid=591bb84013da72a46a1ddca5c987e5e5&amp;type=2#Cocogoose Pro-trial SDF&apos;);" />
+            <ui:VisualElement style="flex-grow: 1; align-items: center; flex-direction: row;">
+                <ui:VisualElement name="characters" style="flex-direction: row; flex-grow: 1; justify-content: center;">
+                    <ui:Button display-tooltip-when-elided="true" name="character-1" enable-rich-text="false" focusable="false" class="button__vertical player__1">
+                        <ui:Label text="ONE" display-tooltip-when-elided="true" class="header" style="-unity-font: url(&apos;project://database/Assets/Fonts/Cocogoose%20Pro-trial.ttf?fileID=12800000&amp;guid=08d723038aff1fa4ab1dfca86332d645&amp;type=3#Cocogoose Pro-trial&apos;); -unity-font-definition: url(&apos;project://database/Assets/Fonts/Cocogoose%20Pro-trial%20SDF.asset?fileID=11400000&amp;guid=591bb84013da72a46a1ddca5c987e5e5&amp;type=2#Cocogoose Pro-trial SDF&apos;);" />
+                    </ui:Button>
+                    <ui:Button display-tooltip-when-elided="true" name="character-2" enable-rich-text="false" focusable="false" class="button__vertical player__2" style="display: flex;">
+                        <ui:Label text="TWO" display-tooltip-when-elided="true" class="header" style="-unity-font: url(&apos;project://database/Assets/Fonts/Cocogoose%20Pro-trial.ttf?fileID=12800000&amp;guid=08d723038aff1fa4ab1dfca86332d645&amp;type=3#Cocogoose Pro-trial&apos;); -unity-font-definition: url(&apos;project://database/Assets/Fonts/Cocogoose%20Pro-trial%20SDF.asset?fileID=11400000&amp;guid=591bb84013da72a46a1ddca5c987e5e5&amp;type=2#Cocogoose Pro-trial SDF&apos;);" />
+                    </ui:Button>
+                    <ui:Button display-tooltip-when-elided="true" name="character-3" enable-rich-text="false" focusable="false" class="button__vertical player__3">
+                        <ui:Label text="THREE" display-tooltip-when-elided="true" class="header" style="-unity-font: url(&apos;project://database/Assets/Fonts/Cocogoose%20Pro-trial.ttf?fileID=12800000&amp;guid=08d723038aff1fa4ab1dfca86332d645&amp;type=3#Cocogoose Pro-trial&apos;); -unity-font-definition: url(&apos;project://database/Assets/Fonts/Cocogoose%20Pro-trial%20SDF.asset?fileID=11400000&amp;guid=591bb84013da72a46a1ddca5c987e5e5&amp;type=2#Cocogoose Pro-trial SDF&apos;);" />
+                    </ui:Button>
+                    <ui:Button display-tooltip-when-elided="true" name="character-4" enable-rich-text="false" focusable="false" class="button__vertical player__4">
+                        <ui:Label text="FOUR" display-tooltip-when-elided="true" class="header" style="-unity-font: url(&apos;project://database/Assets/Fonts/Cocogoose%20Pro-trial.ttf?fileID=12800000&amp;guid=08d723038aff1fa4ab1dfca86332d645&amp;type=3#Cocogoose Pro-trial&apos;); -unity-font-definition: url(&apos;project://database/Assets/Fonts/Cocogoose%20Pro-trial%20SDF.asset?fileID=11400000&amp;guid=591bb84013da72a46a1ddca5c987e5e5&amp;type=2#Cocogoose Pro-trial SDF&apos;);" />
+                    </ui:Button>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="navigation" style="align-items: flex-end; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 15px; padding-right: 15px; padding-top: 5px; padding-bottom: 5px; flex-shrink: 0; background-color: rgb(0, 0, 0); display: flex; overflow: hidden; flex-direction: row-reverse; justify-content: space-between; min-height: auto; min-width: auto;">
+            <ui:Button text="BACK" display-tooltip-when-elided="true" name="back" tabindex="5" focusable="true" class="button" style="padding-top: 5px; padding-bottom: 4px; font-size: 16px; border-top-left-radius: 10px; border-bottom-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; padding-left: 25px; margin-left: 2px; margin-right: 2px; margin-top: 2px; margin-bottom: 2px; -unity-font-definition: url(&apos;project://database/Assets/Fonts/Cocogoose%20Pro-trial%20SDF.asset?fileID=11400000&amp;guid=591bb84013da72a46a1ddca5c987e5e5&amp;type=2#Cocogoose Pro-trial SDF&apos;);" />
+            <ui:Label text="HELLO~" display-tooltip-when-elided="true" name="navBarLabel" class="header" style="font-size: 20px; flex-grow: 1; -unity-text-align: middle-left; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; -unity-font: url(&apos;project://database/Assets/Fonts/Cocogoose%20Pro-trial.ttf?fileID=12800000&amp;guid=08d723038aff1fa4ab1dfca86332d645&amp;type=3#Cocogoose Pro-trial&apos;); -unity-font-definition: url(&apos;project://database/Assets/Fonts/Cocogoose%20Pro-trial%20SDF.asset?fileID=11400000&amp;guid=591bb84013da72a46a1ddca5c987e5e5&amp;type=2#Cocogoose Pro-trial SDF&apos;);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

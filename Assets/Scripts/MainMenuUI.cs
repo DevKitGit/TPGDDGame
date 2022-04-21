@@ -9,7 +9,7 @@ public class MainMenuUI : MonoBehaviour
 {
     // Start is called before the first frame update
     private Button _startCampaignButton, _quitButton, _creditsButton, _optionsButton,_buttonOptionsToMain;
-    private VisualElement _root, _mainScroll, _mainMenu, _startCampaignMenu, _optionsMenu;
+    private VisualElement _root, _main, _startCampaign, _setUpControls, _optionsMenu;
     private SliderInt _volumeMaster, _volumeMusic;
     private Toggle _toggleVibrations,_toggleSubtitles;
     
@@ -18,11 +18,14 @@ public class MainMenuUI : MonoBehaviour
         _root = GetComponent<UIDocument>().rootVisualElement;
         
         //main menu window
-        _mainMenu = _root.Q<VisualElement>("menu-main");
+        _main = _root.Q<VisualElement>("menu-main");
+
+        _setUpControls = _root.Q<Button>();
+        _startCampaignButton = _root.Q<Button>("start-campaign-button");
+        _startCampaignButton.clicked += MainToCampaignButtonClicked;
         
         _startCampaignButton = _root.Q<Button>("start-campaign-button");
         _startCampaignButton.clicked += MainToCampaignButtonClicked;
-        _startCampaignButton.Focus();
         
         _quitButton = _root.Q<Button>("quit-button");
         _quitButton.clicked += ExitGame;
@@ -52,7 +55,7 @@ public class MainMenuUI : MonoBehaviour
         _buttonOptionsToMain.clicked += OptionsToMainButton;
         
         //Start campaign menu
-        _startCampaignMenu = _root.Q<VisualElement>("menu-campaign");
+        _startCampaign = _root.Q<VisualElement>("menu-campaign");
     }
 
     private void MainToCreditsButton()
@@ -75,25 +78,32 @@ public class MainMenuUI : MonoBehaviour
     {
         throw new NotImplementedException();
     }
+
+    private void DisableEverything()
+    {
+        _main.style.display = DisplayStyle.None;
+        _startCampaign.style.display = DisplayStyle.None;
+        _optionsMenu.style.display = DisplayStyle.None;
+    }
     private void MainToOptionsButton()
     {
-        _mainMenu.visible = false;
-        _optionsMenu.visible = true;
+        DisableEverything();
+        _optionsMenu.style.display = DisplayStyle.Flex;
         _volumeMaster.Focus();
     }
 
 
     private void OptionsToMainButton()
     {
-        _mainMenu.visible = true;
-        _optionsMenu.visible = false;
+        DisableEverything();
+        _main.style.display = DisplayStyle.Flex;
         _optionsButton.Focus();
     }
 
     private void MainToCampaignButtonClicked()
     {
-        _mainMenu.visible = false;
-        _startCampaignMenu.visible = true;
+        _main.SetEnabled(false);
+        _startCampaign.SetEnabled(true);
     }
     private static void ExitGame()
     {
