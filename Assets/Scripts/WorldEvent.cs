@@ -1,9 +1,24 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "WorldEvent",menuName = "Scriptable Objects/World Event")]
 public class WorldEvent : ScriptableObject
 {
     public Sprite sprite;
+
+
+    public List<Choice> choices;
+
+    public CombatTemplate CombatTemplate;
+
+    public WorldEvent nextEvent;
+    
+}
+
+[Serializable]
+public class Choice
+{
     public enum ChoiceOptions
     {
         Fight,
@@ -12,18 +27,12 @@ public class WorldEvent : ScriptableObject
         NextChoice,
         None
     }
-    public ChoiceOptions choice1 = ChoiceOptions.None;
-    public string choice1text = "";
-    
-    public ChoiceOptions choice2 = ChoiceOptions.None;
-    public string choice2text = "";
-    
-    public ChoiceOptions choice3 = ChoiceOptions.None;
-    public string choice3text = "";
+    public ChoiceOptions choiceOption;
+    public string choiceDescription;
 
-    public CombatTemplate CombatTemplate;
-
-    public WorldEvent nextChoice;
-    
+    public Choice(ChoiceOptions choiceOption, string choiceDescription)
+    {
+        this.choiceOption = choiceOption;
+        this.choiceDescription = choiceDescription;
+    }
 }
-    

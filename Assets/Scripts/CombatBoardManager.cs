@@ -35,14 +35,7 @@ public class CombatBoardManager : MonoBehaviour
     public static Vector3Int[] evenDirs = 
         {DEG0, DEG60_EVEN, DEG120_EVEN, DEG180, DEG240_EVEN, DEG300_EVEN};
 
-
-
-    private void Start()
-    {
-        CreateBoard();
-    }
-    
-    private void CreateBoard()
+    public void CreateBoard()
     {
         _tileMap = GetComponentInChildren<Tilemap>();
         _tileMap.CompressBounds();
@@ -62,8 +55,9 @@ public class CombatBoardManager : MonoBehaviour
                     continue;
                 }
                 var tileGO = Instantiate(_TilePrefab.gameObject, _tileMap.CellToWorld(new Vector3Int(x, y, 0)), quaternion.identity,gameObject.transform);
+                tileGO.GetComponent<SpriteRenderer>().sortingOrder = -1;
                 tileGO.name = $"Tile,{x},{y}";
-                board.Add(new Tile(new Vector3Int(x,y,0),true,tileGO.GetComponent<IndicatorTile>()));
+                board.Add(new Tile(new Vector3Int(x,y,0),_tileMap.CellToWorld(new Vector3Int(x, y, 0)),true,tileGO.GetComponent<IndicatorTile>()));
             }
         }
         Pathfinder = new Pathfinder(board, _tileMapDimensions);
@@ -72,9 +66,24 @@ public class CombatBoardManager : MonoBehaviour
     
     public Tile GetTile(Vector3Int cellPos)
     {
-        return InBounds(cellPos) ? null : board[cellPos.y + _tileMapDimensions.y*cellPos.x];
+        return InBounds(cellPos) ? board[Index(cellPos)] : null;
     }
 
+    public bool TryGetTile(Vector3Int cellPos, out Tile tile)
+    {
+        if (InBounds(cellPos))
+        {
+            tile = board[Index(cellPos)];
+            return true;
+        }
+        tile = null;
+        return false;
+    }
+
+    public Tile GetCenterTile()
+    {
+        return GetTile(new Vector3Int(_tileMapDimensions.x/2, _tileMapDimensions.y/2,0));
+    }
     public bool InBounds(Vector3Int gridPos)
     {
         if (gridPos.x == _tileMapDimensions.x-1 && gridPos.y % 2 == 1)

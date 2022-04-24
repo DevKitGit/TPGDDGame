@@ -7,5 +7,5 @@ public class CombatTemplate : ScriptableObject
     public string combatDescription;
     public List<Vector3Int> playerTilePositions;
     public List<Vector3Int> enemyTilePositions;
-    public List<EnemySo> enemies;
+    public List<GameObject> enemies;
 }

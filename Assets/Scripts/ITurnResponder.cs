@@ -5,6 +5,7 @@ public interface ITurnResponder
 {
     bool TurnDone { get; set; }
     bool Alive { get; set; }
+    
     Unit.Faction AllyFaction { get; set; }
     Intent Intent { get; set; }
 

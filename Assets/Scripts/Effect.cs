@@ -1,28 +1,44 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
-public abstract class Effect
+public class Effect
 {
     public string Name;
-    //red = physical, blue = magic, purple CC
     public Sprite EffectTextSprite;
-    public int TurnsLeft;
+    public int EffectDurationInTurns;
     public int MinimumAmount;
     public int MaximumAmount;
-    public bool IgnoreArmor;
-    public Type type;
-
-    public bool applyImmediately;
-    //what was the damage calculated to be
-    public int chosenAmount;
-    public enum Type
+    public EffectType effectType;
+    public bool ApplyImmediately;
+    public bool isEffectConditional;
+    public List<Effect> EffectConditions;
+    public enum EffectType
     {
         None = 0,
-        Physical = 1,
-        Magic = 2,
+        PhysicalDmg = 1,
+        MagicDmg = 2,
         Stun = 3,
         Silence = 4,
-        Slow = 5
+        Slow = 5,
+        Heal = 6,
+        Move = 7,
+        Status = 8
+    }
+    
+    public Effect(EffectSo effectSo)
+    {
+        Name = effectSo.Name;
+        EffectTextSprite = effectSo.EffectTextSprite;
+        EffectDurationInTurns = effectSo.EffectDurationInTurns;
+        MinimumAmount = effectSo.MinimumAmount;
+        MaximumAmount = effectSo.MaximumAmount;
+        effectType = effectSo.effectType;
+        ApplyImmediately = effectSo.ApplyImmediately;
+        isEffectConditional = effectSo.isEffectConditional;
+        EffectConditions = effectSo.EffectConditions.Select(e => new Effect(e)).ToList();
     }
     
 
 }
+

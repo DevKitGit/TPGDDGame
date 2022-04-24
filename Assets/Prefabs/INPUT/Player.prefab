@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2365984120723740876
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2823360459417705249}
+  - component: {fileID: 4978341842479277271}
+  - component: {fileID: -6205135707571457910}
+  m_Layer: 0
+  m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2823360459417705249
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2365984120723740876}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4978341842479277271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2365984120723740876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+  m_NotificationBehavior: 3
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9515cc3a-d577-4b41-be6a-65410bb4518e
+    m_ActionName: Player/GridMove[/DualSenseGamepadHID/leftStick]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 215fd71c-053f-4c96-81c8-5e1b13bd3c5e
+    m_ActionName: Combat/MoveReset[/DualSenseGamepadHID/leftStickPress,/DualSenseGamepadHID1/leftStickPress,/DualSenseGamepadHID2/leftStickPress]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 62d49db2-52aa-4cb6-8c40-07b9f2999db3
+    m_ActionName: Combat/PointerToggle[/DualSenseGamepadHID/rightStickPress,/DualSenseGamepadHID1/rightStickPress,/DualSenseGamepadHID2/rightStickPress]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: beaec202-bd07-4c4b-894f-924579ee89de
+    m_ActionName: World/GridMove[/DualSenseGamepadHID/leftStick/up,/DualSenseGamepadHID1/leftStick/up,/DualSenseGamepadHID2/leftStick/up,/DualSenseGamepadHID/leftStick/down,/DualSenseGamepadHID1/leftStick/down,/DualSenseGamepadHID2/leftStick/down,/DualSenseGamepadHID/leftStick/left,/DualSenseGamepadHID1/leftStick/left,/DualSenseGamepadHID2/leftStick/left,/DualSenseGamepadHID/leftStick/right,/DualSenseGamepadHID1/leftStick/right,/DualSenseGamepadHID2/leftStick/right]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 37ef4fe5-eb0b-47c0-81a8-ee6149eb3ff3
+    m_ActionName: Combat/Interact
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3c4ae884-760f-4171-ac01-56b1801c5bfb
+    m_ActionName: Combat/Cancel
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6709de6e-6d16-46cf-a474-9490734b9dfe
+    m_ActionName: CombatUI/Cancel
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 73c77991-c63b-4653-b06a-11e01b2c398a
+    m_ActionName: CombatUI/Interact
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 136981dd-9ffe-4cc6-9d86-9418be3e2c8a
+    m_ActionName: CombatUI/UINavigate
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: 70b5833b-9b34-4058-97d0-e322baac39e9
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &-6205135707571457910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2365984120723740876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e72dbd3c28d2654d97501fcaf32ff5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

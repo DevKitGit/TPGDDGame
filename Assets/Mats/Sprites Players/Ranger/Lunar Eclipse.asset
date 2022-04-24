@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1adf6540db947b29c79953c15c6742d, type: 3}
+  m_Name: Lunar Eclipse
+  m_EditorClassIdentifier: 
+  Name: Lunar Eclipse
+  sprite: {fileID: 21300000, guid: 541cee6439a7b6540ab8a1be4f384615, type: 3}
+  ActionCost: 1
+  ChargesCurrent: 1
+  ChargesMax: 1
+  Effects: []
+  Ranged: 1
+  Radius: 2
+  ProjectilePrefab: {fileID: 6904552976416724454, guid: 94a4eda682bdce949b67e8b8ce030ff9, type: 3}
+  TargetVisualEffect: {fileID: 0}
+  ProjectileSpeed: 0
+  AttackTimeNormalized: 0

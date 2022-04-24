@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Unity.VisualScripting;
 using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.Utilities;
 using Object = UnityEngine.Object;
 
@@ -21,28 +23,86 @@ public class PlayerController : MonoBehaviour
     
     private Dictionary<Guid, Action<InputAction.CallbackContext>> _lookup = new();
     
-    //Combat Actions
-    public Action<InputAction.CallbackContext> CombatMove = delegate(InputAction.CallbackContext context) {  };
-    public Action<InputAction.CallbackContext> CombatMoveReset = delegate(InputAction.CallbackContext context) {  };
-    public Action<InputAction.CallbackContext> CombatUIEnter = delegate(InputAction.CallbackContext context) {  };
-    public Action<InputAction.CallbackContext> CombatInteract = delegate(InputAction.CallbackContext context) {  };
-    public Action<InputAction.CallbackContext> CombatCancel = delegate(InputAction.CallbackContext context) {  };
+    public Action<InputAction.CallbackContext> CombatGridMove 
+    {
+        get => _lookup.ContainsKey(_controls.Combat.CombatGridMove.id) ? _lookup[_controls.Combat.CombatGridMove.id] : null;
+        set => _lookup[_controls.Combat.CombatGridMove.id] = value; 
+    }
+    public Action<InputAction.CallbackContext> CombatGridMoveReset 
+    {
+        get => _lookup.ContainsKey(_controls.Combat.CombatGridMoveReset.id) ? _lookup[_controls.Combat.CombatGridMoveReset.id] : null;
+        set => _lookup[_controls.Combat.CombatGridMoveReset.id] = value; 
+    }
+    public Action<InputAction.CallbackContext> CombatInteract 
+    {
+        get => _lookup.ContainsKey(_controls.Combat.CombatInteract.id) ? _lookup[_controls.Combat.CombatInteract.id] : null;
+        set => _lookup[_controls.Combat.CombatInteract.id] = value; 
+    }
+    public Action<InputAction.CallbackContext> CombatCancel 
+    {
+        get => _lookup.ContainsKey(_controls.Combat.CombatCancel.id) ? _lookup[_controls.Combat.CombatCancel.id] : null;
+        set => _lookup[_controls.Combat.CombatCancel.id] = value; 
+    }
+    public Action<InputAction.CallbackContext> CombatUINavigate 
+    {
+        get => _lookup.ContainsKey(_controls.Combat.CombatUINavigate.id) ? _lookup[_controls.Combat.CombatUINavigate.id] : null;
+        set => _lookup[_controls.Combat.CombatUINavigate.id] = value; 
+    }
+    public Action<InputAction.CallbackContext> CombatUIEnter 
+    {
+        get => _lookup.ContainsKey(_controls.Combat.CombatUIEnter.id) ? _lookup[_controls.Combat.CombatUIEnter.id] : null;
+        set => _lookup[_controls.Combat.CombatUIEnter.id] = value; 
+    }
+
     
-    //World Actions
-    public Action<InputAction.CallbackContext> WorldNavigate = delegate(InputAction.CallbackContext context) {  };
-    public Action<InputAction.CallbackContext> WorldInteract = delegate(InputAction.CallbackContext context) {  };
-    public Action<InputAction.CallbackContext> WorldCancel = delegate(InputAction.CallbackContext context) {  };
-    public Action<InputAction.CallbackContext> WorldUIEnter = delegate(InputAction.CallbackContext context) {  };
+    public Action<InputAction.CallbackContext> WorldNavigate 
+    {
+        get => _lookup.ContainsKey(_controls.World.WorldNavigate.id) ? _lookup[_controls.World.WorldNavigate.id] : null;
+        set => _lookup[_controls.World.WorldNavigate.id] = value; 
+    }
+    public Action<InputAction.CallbackContext> WorldInteract 
+    {
+        get => _lookup.ContainsKey(_controls.World.WorldInteract.id) ? _lookup[_controls.World.WorldInteract.id] : null;
+        set => _lookup[_controls.World.WorldInteract.id] = value; 
+    }
+    public Action<InputAction.CallbackContext> WorldCancel 
+    {
+        get => _lookup.ContainsKey(_controls.World.WorldCancel.id) ? _lookup[_controls.World.WorldCancel.id] : null;
+        set => _lookup[_controls.World.WorldCancel.id] = value; 
+    }
+    public Action<InputAction.CallbackContext> WorldUIEnter 
+    {
+        get => _lookup.ContainsKey(_controls.World.WorldUIEnter.id) ? _lookup[_controls.World.WorldUIEnter.id] : null;
+        set => _lookup[_controls.World.WorldUIEnter.id] = value; 
+    }
     
-    //Combat UI Actions
-    public Action<InputAction.CallbackContext> CombatUINavigate = delegate(InputAction.CallbackContext context) {  };
-    public Action<InputAction.CallbackContext> CombatUIInteract = delegate(InputAction.CallbackContext context) {  };
-    public Action<InputAction.CallbackContext> CombatUICancel = delegate(InputAction.CallbackContext context) {  };
-    
-    //UI Actions
-    public Action<InputAction.CallbackContext> UINavigate = delegate(InputAction.CallbackContext context) {  };
-    public Action<InputAction.CallbackContext> UISubmit = delegate(InputAction.CallbackContext context) {  };
-    public Action<InputAction.CallbackContext> UICancel = delegate(InputAction.CallbackContext context) {  };
+    public Action<InputAction.CallbackContext> WorldUINavigate 
+    {
+        get => _lookup.ContainsKey(_controls.WorldUI.WorldUINavigate.id) ? _lookup[_controls.WorldUI.WorldUINavigate.id] : null;
+        set => _lookup[_controls.WorldUI.WorldUINavigate.id] = value; 
+    }
+    public Action<InputAction.CallbackContext> WorldUIInteract 
+    {
+        get => _lookup.ContainsKey(_controls.WorldUI.WorldUIInteract.id) ? _lookup[_controls.WorldUI.WorldUIInteract.id] : null;
+        set => _lookup[_controls.WorldUI.WorldUIInteract.id] = value; 
+    }
+
+    public Action<InputAction.CallbackContext> UINavigate 
+    {
+        get => _lookup.ContainsKey(_controls.UI.Navigate.id) ? _lookup[_controls.UI.Navigate.id] : null;
+        set => _lookup[_controls.UI.Navigate.id] = value; 
+    }
+    public Action<InputAction.CallbackContext> UISubmit 
+    {
+        get => _lookup.ContainsKey(_controls.UI.Submit.id) ? _lookup[_controls.UI.Submit.id] : null;
+        set => _lookup[_controls.UI.Submit.id] = value; 
+    }
+    public Action<InputAction.CallbackContext> UICancel 
+    {
+        get => _lookup.ContainsKey(_controls.UI.Cancel.id) ? _lookup[_controls.UI.Cancel.id] : null;
+        set => _lookup[_controls.UI.Cancel.id] = value; 
+
+    }
     public Action<InputAction.CallbackContext> UIPoint = delegate(InputAction.CallbackContext context) {  };
     public Action<InputAction.CallbackContext> UIClick = delegate(InputAction.CallbackContext context) {  };
     public Action<InputAction.CallbackContext> UIScrollWheel = delegate(InputAction.CallbackContext context) {  };
@@ -57,15 +117,26 @@ public class PlayerController : MonoBehaviour
     {
         PlayerInput = GetComponent<PlayerInput>();
         InputManager.AddPlayer(this);
-        PlayerInput.neverAutoSwitchControlSchemes = true;
-        InitControlLookup();
+        var InputmanagerGO = InputManager.Instance.gameObject;
+        var module =InputmanagerGO.GetComponent<InputSystemUIInputModule>();
+        module.actionsAsset = PlayerInput.actions;
+        
+        //PlayerInput.uiInputModule = module;
+        //PlayerInput.uiInputModule = (modules.Length == 1 && modules[0].actionsAsset.name != "PlayerControls") ? modules[0] : InputmanagerGO.AddComponent<InputSystemUIInputModule>();
+        //PlayerInput.uiInputModule.actionsAsset = PlayerInput.actions;
+        module.Process();
+        //PlayerInput.uiInputModule.UpdateModule();
+        //PlayerInput.neverAutoSwitchControlSchemes = true;
+
+        //InitControlLookup();
     }
-    private void InitControlLookup()
+    public void InitControlLookup()
     {
         PlayerInput.onActionTriggered += OnActionTriggered;
         _controls = new PlayerControls();
         _controls.Disable();
         AssignActions();
+        
     }
 
     private void UnassignActions()
@@ -77,45 +148,60 @@ public class PlayerController : MonoBehaviour
     private void AssignActions()
     {
         //Combat
-        SetActionWithID(_controls.Combat.CombatMove,CombatMove);
-        SetActionWithID(_controls.Combat.CombatMoveReset,CombatMoveReset);
-        SetActionWithID(_controls.Combat.CombatUIEnter,CombatUIEnter);
+        
+        SetActionWithID(_controls.Combat.CombatGridMove,CombatGridMove);
+        SetActionWithID(_controls.Combat.CombatGridMoveReset,CombatGridMoveReset);
         SetActionWithID(_controls.Combat.CombatInteract,CombatInteract);
         SetActionWithID(_controls.Combat.CombatCancel, CombatCancel);
-        
+        SetActionWithID(_controls.Combat.CombatUINavigate, CombatUINavigate);
+        SetActionWithID(_controls.Combat.CombatUIEnter, CombatUIEnter);
+
         SetActionWithID(_controls.World.WorldNavigate,WorldNavigate);
         SetActionWithID(_controls.World.WorldInteract,WorldInteract);
         SetActionWithID(_controls.World.WorldCancel,WorldCancel);
         SetActionWithID(_controls.World.WorldUIEnter,WorldUIEnter);
         
-        SetActionWithID(_controls.CombatUI.CombatUINavigate,CombatUINavigate);
-        SetActionWithID(_controls.CombatUI.CombatUIInteract,CombatUIInteract);
-        SetActionWithID(_controls.CombatUI.CombatUICancel,CombatUICancel);
+        SetActionWithID(_controls.WorldUI.WorldUIInteract, WorldUIInteract);
+        SetActionWithID(_controls.WorldUI.WorldUINavigate, WorldUINavigate);
         
-        SetActionWithID(_controls.UI.UINavigate,UINavigate);
-        SetActionWithID(_controls.UI.UISubmit,UISubmit);
-        SetActionWithID(_controls.UI.UICancel,UICancel);
-        SetActionWithID(_controls.UI.UIPoint,UIPoint);
-        SetActionWithID(_controls.UI.UIClick,UIClick);
-        SetActionWithID(_controls.UI.UIScrollWheel,UIScrollWheel);
-        SetActionWithID(_controls.UI.UIMiddleClick,UIMiddleClick);
-        SetActionWithID(_controls.UI.UIRightClick,UIRightClick);
-        SetActionWithID(_controls.UI.UITrackedDevicePosition,UITrackedDevicePosition);
-        SetActionWithID(_controls.UI.UITrackedDeviceOrientation,UITrackedDeviceOrientation);
-        SetActionWithID(_controls.UI.UIJoin,UIJoin);
+        SetActionWithID(_controls.UI.Navigate,UINavigate);
+        SetActionWithID(_controls.UI.Submit,UISubmit);
+        SetActionWithID(_controls.UI.Cancel,UICancel);
+        SetActionWithID(_controls.UI.Point,UIPoint);
+        SetActionWithID(_controls.UI.Click,UIClick);
+        SetActionWithID(_controls.UI.ScrollWheel,UIScrollWheel);
+        SetActionWithID(_controls.UI.MiddleClick,UIMiddleClick);
+        SetActionWithID(_controls.UI.RightClick,UIRightClick);
+        SetActionWithID(_controls.UI.TrackedDevicePosition,UITrackedDevicePosition);
+        SetActionWithID(_controls.UI.TrackedDeviceOrientation,UITrackedDeviceOrientation);
+        SetActionWithID(_controls.UI.Join,UIJoin);
     }
     
-    private void SetActionWithID(InputAction inputActionGuidRef,Action<InputAction.CallbackContext> action)
+    public void SetActionWithID(InputAction inputActionGuidRef,Action<InputAction.CallbackContext> action)
     {
+        action += delegate(InputAction.CallbackContext context) {  };
         _lookup[inputActionGuidRef.id] = action;
-        
+    }
+
+    
+    public void AssignAction(Action<InputAction.CallbackContext>inputAction, Action<InputAction.CallbackContext> action)
+    {
+        inputAction += action;
     }
     
+    public void UnAssignAction(InputAction inputActionGuidRef, Action<InputAction.CallbackContext> action)
+    {
+        _lookup[inputActionGuidRef.id] -= action;
+    }
     private void OnActionTriggered(InputAction.CallbackContext obj)
     {
-        if (_lookup.TryGetValue(obj.action.id, out var action))
+        
+        /*
+        if (PlayerInput.currentActionMap == null || !PlayerInput.currentActionMap.Contains(obj.action))
         {
-            action.Invoke(obj);
+            return;
         }
+        */
+        _lookup[obj.action.id].Invoke(obj);
     }
 }

@@ -4,33 +4,85 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
+using Random = System.Random;
 
 public abstract class Unit : MonoBehaviour, ITurnResponder
 {
-    public bool TurnDone { get; set; }
-    public bool Alive { get; set; }
-    public Faction AllyFaction { get; set; }
-    public Faction EnemyFaction { get; set; }
-    public int LifeForce { get; set; }
+    protected static readonly int AliveString = Animator.StringToHash("Alive");
+    protected static readonly int WalkingString = Animator.StringToHash("Walking");
+    protected static readonly int HitString = Animator.StringToHash("Hit");
+    protected static readonly int AttackString = Animator.StringToHash("Attack");
+    
+    #region  TurnResponderFields
 
+    public bool TurnDone
+    {
+        get => _turnDone;
+        set => _turnDone = value;
+    }
+    
+    public bool Alive
+    {
+        get => _Alive;
+        set => _Alive = value;
+    }
+    
+    public Faction AllyFaction
+    {
+        get => _AllyFaction;
+        set => _AllyFaction = value;
+    }
     public abstract Intent Intent { get; set; }
     public int TurnPriority { get; set; }
     public abstract TaskCompletionSource<bool> Tcs { get; set; }
     public abstract Task<bool> DoTurn();
 
-    public string UnitName;
-    public Sprite icon;
-    public Sprite Sprite;
-    public SpriteRenderer SpriteRenderer;
-    public int STR, DEX, CON, INT, LCK;
-    public float combatMoveSpeed;
-    public Vector3Int tilePosition;
-    public List<Ability> abilities;
-    public String description;
-    public List<Effect> appliedEffects;
-    public bool MovePhaseThisTurn;
-    public bool ActionPhaseThisTurn;
+    #endregion
+
+    [SerializeField] public string UnitName;
+    [SerializeField] public String description;
+    [SerializeField] public Sprite icon;
+    [SerializeField] public Vector3Int tilePosition;
+    protected SpriteRenderer SpriteRenderer;
+    protected Animator animator;
+    protected HealthBarController _healthBarController;
+    [Header("Stats")]
+    public float LifeForce;
+    public float MaxLifeForce;
+
+    public float CombatMoves;
+    public float MaxCombatMoves;
+
+    [SerializeField] public List<Ability> abilities;
+    [SerializeField] protected List<AbilitySo> AbilitySoList;
+    [Header("TurnResponder fields")]
+    [SerializeField] protected bool _turnDone;
+    [SerializeField] protected bool _Alive;
+    [SerializeField] protected Faction _AllyFaction;
+    [SerializeField] protected Faction _EnemyFaction;
+    [SerializeField] protected bool SelectPhaseActive;
+    [SerializeField] protected bool MovePhaseThisTurn, MovePhaseActive, MovePhaseDone;
+    [SerializeField] protected bool ActionPhaseThisTurn, ActionPhaseActive, ActionPhaseDone;
     
+    protected List<Effect> appliedEffects = new();
+    protected Stack<Tile> currentPath;
+    public CombatBoardManager _combatBoardManager;
+
+    [SerializeField, Range(0.1f, 10f)] protected float movementSpeed;
+    [SerializeField, Range(0f, 1f)] protected float attackTimeNormalized;
+    protected Tile _targetTile;
+
+    protected void Awake()
+    {
+        _combatBoardManager = FindObjectOfType<CombatBoardManager>();
+        animator = GetComponent<Animator>();
+        SpriteRenderer = GetComponent<SpriteRenderer>();
+        abilities = AbilitySoList.Select(so => new Ability(so)).ToList();
+        _healthBarController = GetComponentInChildren<HealthBarController>();
+        _healthBarController?.SetupSlider(this);
+    }
+
     public enum Faction
     {
         Players,
@@ -39,162 +91,131 @@ public abstract class Unit : MonoBehaviour, ITurnResponder
         None
     }
 
-    public void BeginTurn()
-    {
-        MovePhaseThisTurn = true;
-        ActionPhaseThisTurn = true;
-    }
+   
 
     public void ReceiveEffect(List<Effect> effects)
     {
+        animator.SetTrigger(HitString);
         foreach (var effect in effects)
         {
-            if (!effect.applyImmediately)
+            if (effect.ApplyImmediately)
             {
-                appliedEffects.Add(effect);
+                if (!ApplySingleEffect(effect))
+                {
+                    //Unit died while applying effects, so stop applying more(prevents possible weird behavior)
+                    Alive = false;
+                    animator.SetBool(AliveString,false);
+                    break;
+                }
             }
-            else
-            {
-                ApplySingleEffect(effect);
-                appliedEffects.Add(effect);
-            }
+            appliedEffects.Add(effect);
         }
     }
     public void ApplyEffects()
     {
-        foreach (var effect in appliedEffects.Where(effect => effect.TurnsLeft >= 1))
+        foreach (var effect in appliedEffects.Where(effect => effect.EffectDurationInTurns >= 1))
         {
-            effect.TurnsLeft--;
-            ApplySingleEffect(effect);
+            effect.EffectDurationInTurns--;
+            if (!ApplySingleEffect(effect))
+            {
+                //Unit died while applying effects, so stop applying more(prevents possible weird behavior)
+                Alive = false;
+                animator.SetBool(AliveString,false);
+                break;
+            }
         }
-        appliedEffects.RemoveAll(effect => effect.TurnsLeft <= 0);
+        appliedEffects.RemoveAll(effect => effect.EffectDurationInTurns <= 0);
     }
 
-    public void ApplySingleEffect(Effect effect)
+    public bool ApplySingleEffect(Effect effect)
     {
-        switch (effect.type)
+        var alive = true;
+        switch (effect.effectType)
         {
-            case Effect.Type.None:
+            case Effect.EffectType.None:
                 break;
-            case Effect.Type.Physical:
+            case Effect.EffectType.PhysicalDmg:
+                alive = ApplyHealth(-UnityEngine.Random.Range(effect.MinimumAmount, effect.MaximumAmount + 1));
                 break;
-            case Effect.Type.Magic:
+            case Effect.EffectType.MagicDmg:
+                alive = ApplyHealth(-UnityEngine.Random.Range(effect.MinimumAmount, effect.MaximumAmount + 1));
                 break;
-            case Effect.Type.Stun:
+            case Effect.EffectType.Stun:
                 MovePhaseThisTurn = false;
                 ActionPhaseThisTurn = false;
                 break;
-            case Effect.Type.Silence:
+            case Effect.EffectType.Silence:
                 ActionPhaseThisTurn = false;
                 break;
-            case Effect.Type.Slow:
+            case Effect.EffectType.Slow:
+                MovePhaseThisTurn = ApplyMoves(-UnityEngine.Random.Range(effect.MinimumAmount, effect.MaximumAmount + 1));
+                break;
+            case Effect.EffectType.Heal:
+                ApplyHealth(UnityEngine.Random.Range(effect.MinimumAmount, effect.MaximumAmount + 1));
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
-
-        VisualizeEffect(effect);
+        return alive;
     }
 
     private void VisualizeEffect(Effect effect)
     {
-        switch (effect.type)
+        switch (effect.effectType)
         {
-            case Effect.Type.None:
+            case Effect.EffectType.None:
                 break;
-            case Effect.Type.Physical:
+            case Effect.EffectType.PhysicalDmg:
                 //Damage take animation
                 break;
-            case Effect.Type.Magic:
+            case Effect.EffectType.MagicDmg:
                 //Damage take animation
                 break;
-            case Effect.Type.Stun:
+            case Effect.EffectType.Stun:
                 //Show a stun icon
                 break;
-            case Effect.Type.Silence:
+            case Effect.EffectType.Silence:
                 //Show a silence icon
                 break;
-            case Effect.Type.Slow:
+            case Effect.EffectType.Slow:
                 //Show a slow icon
+                break;
+            case Effect.EffectType.Heal:
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
     }
 
-    public void OnChangeDirection()
+    public bool ApplyHealth(int change)
     {
-        SpriteRenderer.flipX = !SpriteRenderer.flipX;
-        
+        LifeForce = Math.Clamp(LifeForce + change, 0, MaxLifeForce);
+        _healthBarController?.UpdateSlider(this);
+        return LifeForce != 0;
     }
     
-    /*
-     * level-up dump stats, increase charge of ability
-     * a way to get player class, stats, weapon, abilities
-     * player stats
-     */
-    //player calculations
-    private int _classHPBase, _lifeForce, _playerLevel, _armor, _playerWpnDmg, _playerSpellDmg, 
-        _pPhysDmg, _pRngDmg, _pMgcDmg, _movementSpeed;
-    
-    //paladin(gem boi) ability calc, mace, aura is based on heal/attack, block near allies
-    private int _trgtAllyHeal/*Targeted ally heal, starts with 1 charge, max 2/3 replenish with auto-attack*/,
-        _holyBurden/*shield bashes enemy, gives ally shield, 3 charges?*/,
-        _teamImm/*Team immunity for a round, doesn't affect aura*/;
-    
-    //hunter ability calc, bow, mark target shot, deal less dmg at distance
-    private int _huntersInsight/*avoid 1 projectile, and increases movement points, infinite charges*/,
-        _ccSlow/*ability that slows x turns, 3 charges?*/,
-        _AoE/*damage an area, proc 3 marks in a row*/;
-    
-    /*
-     * barbarian ability calc, 2h axe, barb passive is when hitting enemy, that enemy deals reduced dmg to barb,
-     * when attacking gain stack then start turn heal based on stack(heals max at specific cap), at end turn stack gets decreased by 1.
-     * gain turns when killing enemies
-     */
-    private int _intimidatingShout/*Cone 3 tiles in front of barb and goes out to 5 tiles, 
-    when enemy hit they walk in random direction for their next turn*/,
-        _cleave/*melee splash, hits c-shape, gives stacks towards lifesteal*/,
-        _rageMode/*gains charges based on # of attacks, dmg goes up based on stacks, stacks expires when used and damages*/;
-    /*
-     * sorcerer ability calc, 2h staff, shoots out arcane bolts to multiple enemies(turns into bouncing bolts),
-     * sorc passive all attacks apply marks, and other attacks expend marks,
-     */
-    private int _tp/*swap 2 targets, self included*/,
-        _marchOfFire/*self explanatory, AoE(turns into fire vines, roots and damages over time)*/,
-        _/**/,
-        _chaosZone/*if enemies hit = they can only basic attack, if self hit = buffs kit, lasts 3 turns*/;
- 
-    //a way to get enemy type, stats, weapone, abilities
-    //enemy stats
-    private int _ememyStr,_enemyDex, _enemyCon, _enemyInt, _enemyLluck;
-    //enemy calculations
-    private int _enemyHPBase, _enemyLifeForce, _enemyArmor, _enemyWpnDmg, _enemySpellDmg, _enemyLevel, 
-        _ePhysDmg, _eRngDmg, _eMgcDmg, _enemyMovementSpeed;
-    
-    
-    private void _statCalc()
+    public bool ApplyMoves(float change)
     {
-        //lifeforce calculation
-        _lifeForce = (_classHPBase + (CON / 2)) + _playerLevel;
-        _enemyLifeForce = (_enemyHPBase + (_enemyCon / 2) + _enemyLevel);
-        
+        CombatMoves = Math.Clamp(CombatMoves + change, 0, MaxCombatMoves);
+        return CombatMoves != 0f;
     }
 
-    private void _playerDmgHandler()
+    public void SetDirection(Tile destination, Tile origin = null)
     {
-        //player damage calculation
-        _pPhysDmg = ((STR / _enemyCon) * _playerWpnDmg) - _enemyArmor;
-        _pRngDmg = ((DEX / _enemyCon) * _playerWpnDmg) - _enemyArmor;
-        _pMgcDmg = ((INT / _enemyCon) * _playerSpellDmg) + (_playerLevel / 2);
+        if (origin == null)
+        {
+            SetDirection(_combatBoardManager.GetTile(tilePosition).Position_world, destination.Position_world);
+            return;
+        }
+        SetDirection(origin.Position_world, destination.Position_world);
     }
-
-    private void _enemyDmgHandler()
+    public void SetDirection(Vector3 origin, Vector3 destination)
     {
-        //enemy damage calculation
-        _ePhysDmg = ((_ememyStr / CON) * _enemyWpnDmg) + _enemyLevel;
-        _eRngDmg = ((_ememyStr / CON) * _enemyWpnDmg) + _enemyLevel;
-        _eMgcDmg = ((_enemyInt / CON) * _enemySpellDmg) + (_enemyLevel / 2);
+        if (Vector3.Distance(origin, destination) <= Vector3.kEpsilon)
+        {
+            //dont change directions if you're standing in the same place
+            return;
+        }
+        SpriteRenderer.flipX = Math.Sign(origin.x - destination.x) > 0;
     }
-
 }

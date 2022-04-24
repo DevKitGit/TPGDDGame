@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Dreamteck.Splines;
 using Unity.Mathematics;
@@ -9,6 +10,7 @@ using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using Debug = UnityEngine.Debug;
 
 public class Pathpicker : MonoBehaviour
 {
@@ -27,26 +29,31 @@ public class Pathpicker : MonoBehaviour
         arrows = new List<GameObject>();
         _connections = new Node.Connection[] { };
         splineFollower.onNode += NodeReached;
-        InputManager.OnPlayerJoin += PlayerJoined;
+        PlayerJoined(PlayerInput.all.ToList().Select(PI => PI.GetComponent<PlayerController>()).ToList());
+        ReadyToMove = true;
         followSpeedHolder = splineFollower.followSpeed;
         splineFollower.SetPercent(0.01);
         splineFollower.direction = Spline.Direction.Backward;
     }
-
-    private void PlayerJoined(PlayerController playerController)
-    {
-        _playerController = playerController;
-        _playerController.WorldNavigate += ReceivePathDirection;
-        _playerController.WorldInteract += ReceivePathSelect;
-        InputManager.OnPlayerJoin -= PlayerJoined;
-    }
     
-    private void ReceivePathDirection(InputAction.CallbackContext context)
+    private void PlayerJoined(List<PlayerController> playerControllers)
+    {
+        foreach (var playerController in playerControllers)
+        {
+            _playerController = playerController;
+            playerController.PlayerInput.SwitchCurrentActionMap("World");
+            _playerController.WorldNavigate += ReceivePathDirection;
+            _playerController.WorldInteract += ReceivePathSelect;
+            //_playerController.AssignAction(, ReceivePathDirection);
+            //_playerController.AssignAction(_playerController.WorldInteract, ReceivePathSelect);
+        }
+    }
+
+    public void ReceivePathDirection(InputAction.CallbackContext context)
     {
         if (context.performed && ReadyToMove)
         {
             var thisdir = context.ReadValue<Vector2>();
-            
             if (thisdir.magnitude > new Vector2(0.3f,0.3f).magnitude)
             {
                 
@@ -58,7 +65,7 @@ public class Pathpicker : MonoBehaviour
         }
     }
 
-    private void ReceivePathSelect(InputAction.CallbackContext context)
+    public void ReceivePathSelect(InputAction.CallbackContext context)
     {
         if (context.performed && ReadyToMove && currentDirectionIndex != -1)
         {
@@ -115,7 +122,7 @@ public class Pathpicker : MonoBehaviour
     private void NodeReached(List<SplineTracer.NodeConnection> passed)
     {
         currentDirectionIndex = -1;
-        ReadyToMove = splineFollower.GetPercent() == 1.0 || splineFollower.GetPercent() == 0.0;
+        ReadyToMove = splineFollower.GetPercent() == 1.0f || splineFollower.GetPercent() == 0.0;
         if (!ReadyToMove)
         {
             return;
@@ -137,7 +144,12 @@ public class Pathpicker : MonoBehaviour
                     smallestPoint = point;
                 }
             }
-            var arrow = Instantiate(arrowPrefab, passed[0].node.transform.position, Quaternion.identity).GetComponent<ArrowDirection>();
+            var arrow = Instantiate(
+                arrowPrefab, 
+                passed[0].node.transform.position, 
+                Quaternion.identity, 
+                GameObject.FindWithTag("WorldScene").transform)
+                .GetComponent<ArrowDirection>();
             arrow.UpdateArrowDirection(passed[0].node.transform, smallestPoint.position);
             arrows.Add(arrow.gameObject);
         }

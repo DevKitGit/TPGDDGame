@@ -466,7 +466,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1312143316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -676,6 +676,58 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1394192731, guid: e79500cf12384a54ab525a276cde7532, type: 3}
+      propertyPath: m_MoveAction
+      value: 
+      objectReference: {fileID: -5125026720005497698, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+    - target: {fileID: 1394192731, guid: e79500cf12384a54ab525a276cde7532, type: 3}
+      propertyPath: m_PointAction
+      value: 
+      objectReference: {fileID: -5519245651510008520, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+    - target: {fileID: 1394192731, guid: e79500cf12384a54ab525a276cde7532, type: 3}
+      propertyPath: m_ActionsAsset
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+    - target: {fileID: 1394192731, guid: e79500cf12384a54ab525a276cde7532, type: 3}
+      propertyPath: m_CancelAction
+      value: 
+      objectReference: {fileID: -979432451996524628, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+    - target: {fileID: 1394192731, guid: e79500cf12384a54ab525a276cde7532, type: 3}
+      propertyPath: m_SubmitAction
+      value: 
+      objectReference: {fileID: 7428320963567742654, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+    - target: {fileID: 1394192731, guid: e79500cf12384a54ab525a276cde7532, type: 3}
+      propertyPath: m_LeftClickAction
+      value: 
+      objectReference: {fileID: 7755377492337430788, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+    - target: {fileID: 1394192731, guid: e79500cf12384a54ab525a276cde7532, type: 3}
+      propertyPath: m_PointerBehavior
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1394192731, guid: e79500cf12384a54ab525a276cde7532, type: 3}
+      propertyPath: m_RightClickAction
+      value: 
+      objectReference: {fileID: -372773728024878028, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+    - target: {fileID: 1394192731, guid: e79500cf12384a54ab525a276cde7532, type: 3}
+      propertyPath: m_MiddleClickAction
+      value: 
+      objectReference: {fileID: 5226699220686237000, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+    - target: {fileID: 1394192731, guid: e79500cf12384a54ab525a276cde7532, type: 3}
+      propertyPath: m_ScrollWheelAction
+      value: 
+      objectReference: {fileID: -3260629443214196809, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+    - target: {fileID: 1394192731, guid: e79500cf12384a54ab525a276cde7532, type: 3}
+      propertyPath: m_DeselectOnBackgroundClick
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1394192731, guid: e79500cf12384a54ab525a276cde7532, type: 3}
+      propertyPath: m_TrackedDevicePositionAction
+      value: 
+      objectReference: {fileID: -478141775403813129, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+    - target: {fileID: 1394192731, guid: e79500cf12384a54ab525a276cde7532, type: 3}
+      propertyPath: m_TrackedDeviceOrientationAction
+      value: 
+      objectReference: {fileID: 537171196058635704, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
     - target: {fileID: 6049561073137940259, guid: e79500cf12384a54ab525a276cde7532, type: 3}
       propertyPath: m_RootOrder
       value: 2

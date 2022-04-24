@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.bedtime.selection-detective": {
+      "version": "https://github.com/BedtimeDigitalGames/Unity-Selection-Detective.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "8d774907e90085d149bf745f9913a38f8efa950a"
+    },
     "com.unity.2d.animation": {
       "version": "7.0.4",
       "depth": 1,

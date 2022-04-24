@@ -2,8 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
+using UnityEngine.Rendering.UI;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
@@ -62,14 +65,27 @@ public class CharacterSelectMenu : IMenuHandler
 		{
 			AudioManager.Play("squish-2");
 			visualPlayer.Controller = controller;
+			controller.InitControlLookup();
 			visualPlayer.Element.SetEnabled(true);
 			ProcessNavigation(visualPlayer, null);
-			controller.UICancel +=(e => ProcessBack(visualPlayer, e));
-			controller.UISubmit +=(e => ProcessLockIn(visualPlayer, e));
-			controller.UINavigate += (e => ProcessNavigation(visualPlayer, e));
+			visualPlayer.Controller.UICancel += (e => ProcessBack(visualPlayer, e));
+			visualPlayer.Controller.UISubmit += (e => ProcessLockIn(visualPlayer, e));
+			visualPlayer.Controller.UINavigate += (e => ProcessNavigation(visualPlayer, e));
 		}
 	}
 
+	
+	private void UnassignPlayerEvents()
+	{
+		foreach (var visualPlayer in _players)
+		{
+			if (visualPlayer.Controller == null) continue;
+			visualPlayer.Controller.UICancel = delegate(InputAction.CallbackContext context) {  };
+			visualPlayer.Controller.UISubmit  = delegate(InputAction.CallbackContext context) {  };
+			visualPlayer.Controller.UINavigate  = delegate(InputAction.CallbackContext context) {  };
+		}
+	}
+	
 	void ProcessBack(VisualPlayer visualPlayer, InputAction.CallbackContext context)
 	{
 		if (!context.performed || visualPlayer.Controller == null)
@@ -101,7 +117,7 @@ public class CharacterSelectMenu : IMenuHandler
 		visualPlayer.LockedIn = true;
 		AudioManager.Play("squish-3");
 		
-		if (_countDown == null && LockedInCount == ValidCount && ValidCount > 1)
+		if (_countDown == null && LockedInCount == ValidCount && ValidCount > 0)
 		{
 
 			_countDown = GameManager.Start(DoCountDown());
@@ -125,7 +141,7 @@ public class CharacterSelectMenu : IMenuHandler
 			
 			UI.Navigation.SetNavbarText($"All players ready! {num}!");
 			yield return new WaitForSeconds(1);
-			if (LockedInCount != ValidCount || ValidCount <= 1)
+			if (LockedInCount != ValidCount || ValidCount <= 0)
 			{
 				failed = true;
 				break;
@@ -134,6 +150,7 @@ public class CharacterSelectMenu : IMenuHandler
 
 		if (!failed)
 		{
+			UnassignPlayerEvents();
 			GameManager.LoadMainScene();
 		}
 
