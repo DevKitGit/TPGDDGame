@@ -8,6 +8,7 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
@@ -26,12 +27,18 @@ public class CombatManager : MonoBehaviour
     public List<Image> IntentDisplayList;
     public List<GameObject> enemies;
     public CombatBoardManager combatBoardManager;
+    public Image _BackgroundImage;
+
+    public Audio onButtonSelect, onButtonPress;
+    [SerializeField] private Audio OnTurnBegin, OnCombatWin, onCombatLose;
+    private AudioSource _audioSource;
     private CombatTemplate _combatTemplate;
     private BannerAnimator _bannerAnimator;
-    
     public void InitializeCombat(CombatTemplate template)
     {
         _combatTemplate = template;
+        _audioSource = AudioManager.Play(template.audioClip, true, targetParent: gameObject);
+        _BackgroundImage.sprite = template.Background;
         _bannerAnimator = FindObjectOfType<BannerAnimator>();
         _tilemap = FindObjectOfType<Tilemap>();
         combatBoardManager = FindObjectOfType<CombatBoardManager>();
@@ -54,7 +61,8 @@ public class CombatManager : MonoBehaviour
             var playerInput = playerInputs[index];
             playerInput.SwitchCurrentActionMap("Combat");
             var player = Instantiate(playerInput.gameObject.GetComponent<PlayerController>().PlayerAsset.Prefab,
-                _tilemap.CellToWorld(_combatTemplate.playerTilePositions[index]),quaternion.identity).GetComponent<Player>();
+                _tilemap.CellToWorld(_combatTemplate.playerTilePositions[index]) + _tilemap.tileAnchor,quaternion.identity, transform).GetComponent<Player>();
+            player.gameObject.name = player.UnitName;
             player._combatBoardManager = combatBoardManager;
             player.tilePosition = _combatTemplate.playerTilePositions[index];
             combatBoardManager.GetTile(player.tilePosition).SetUnit(player);
@@ -70,8 +78,8 @@ public class CombatManager : MonoBehaviour
     {
         for (var i = 0; i < _combatTemplate.enemies.Count; i++)
         {
-            var enemy = Instantiate(_combatTemplate.enemies[i], _tilemap.CellToWorld(_combatTemplate.enemyTilePositions[i]), quaternion.identity).GetComponent<Enemy>();
-            enemy.gameObject.name = enemy.name;
+            var enemy = Instantiate(_combatTemplate.enemies[i], _tilemap.CellToWorld(_combatTemplate.enemyTilePositions[i]) + _tilemap.tileAnchor, quaternion.identity, transform).GetComponent<Enemy>();
+            enemy.gameObject.name = enemy.UnitName;
             enemy._combatBoardManager = combatBoardManager;
             enemy.tilePosition = _combatTemplate.enemyTilePositions[i];
             combatBoardManager.GetTile(enemy.tilePosition).SetUnit(enemy);
@@ -95,21 +103,24 @@ public class CombatManager : MonoBehaviour
                 if (TurnResponders[currentTurnIndex].Alive)
                 {
                     await Task.Delay(1000);
-                    var attachment = "'s turn"; 
-                    await _bannerAnimator.StartBanner(((Unit) TurnResponders[currentTurnIndex]).UnitName+attachment, 2f);
+                    var attachment = "'s turn";
+                    if (TurnResponders[currentTurnIndex].AllyFaction != Unit.Faction.AI)
+                    {
+                        await _bannerAnimator.StartBanner(((Unit) TurnResponders[currentTurnIndex]).UnitName+attachment, 2f);
+                    }
                     TurnResponders[currentTurnIndex].TurnDone = await TurnResponders[currentTurnIndex].DoTurn();
                 }
                 currentTurnIndex++;
                 var factionWon = CheckGameOutcome();
                 if (factionWon != Unit.Faction.None)
                 {
-                    Debug.Log($"Faction winner: {factionWon}");
-                    EndGame();
+                    EndGame(factionWon);
                     return;
                 }
                 UpdateIntents();
             }
-            await _bannerAnimator.StartBanner($"Turn {TurnNumber+1} begins", 2f);
+            AudioManager.Play(OnTurnBegin, targetParent: gameObject);
+            await _bannerAnimator.StartBanner($"Turn {TurnNumber+1} begins", OnTurnBegin.Clip.length);
             EndTurn();
         }
     }
@@ -150,12 +161,58 @@ public class CombatManager : MonoBehaviour
         
     }
     
-    private void EndGame()
+    private async void EndGame(Unit.Faction faction)
     {
-        //SceneManager.UnloadSceneAsync("combat");
+        if (faction == Unit.Faction.Players)
+        {
+            foreach (var playerInput in PlayerInput.all)
+            {
+                playerInput.SwitchCurrentActionMap("World");
+                playerInput.ActivateInput();
+            }
+            InputManager.Instance.gameObject.GetComponent<InputSystemUIInputModule>().UnassignActions();
+            InputManager.Instance.gameObject.GetComponent<InputSystemUIInputModule>().AssignDefaultActions();
+            InputManager.Instance.gameObject.GetComponent<InputSystemUIInputModule>().ActivateModule();
+            Destroy(_audioSource.gameObject);
+            AudioManager.Play(OnCombatWin, targetParent: gameObject);
+            
+            await _bannerAnimator.StartBanner("You are victorious!", OnCombatWin.Clip.length);
+            var task = SceneManager.UnloadSceneAsync("combat");
+            task.completed += TaskOncompleted;
+        }
+        else
+        {
+            Destroy(_audioSource.gameObject);
+            AudioManager.Play(onCombatLose, targetParent: gameObject);
+            foreach (var playerInput in PlayerInput.all)
+            {
+                playerInput.SwitchCurrentActionMap("World");
+                playerInput.ActivateInput();
+            }
+            foreach (var playerInput in PlayerInput.all)
+            {
+                playerInput.GetComponent<PlayerController>().WorldInteract += QuitApplication;
+                playerInput.GetComponent<PlayerController>().WorldCancel += QuitApplication;
+            }
+            await _bannerAnimator.StartBanner("You died.. Press  to exit", onCombatLose.Clip.length);
+            Application.Quit();
+        }
         
     }
-    
+
+    private void QuitApplication(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Application.Quit();
+        }
+    }
+
+    private void TaskOncompleted(AsyncOperation obj)
+    {
+        FindObjectsOfType<GameObject>(true).FirstOrDefault(e => e.name == "WorldScene")?.SetActive(true);
+    }
+
     private void IncrementTurnText()
     {
         TurnNumber += 1;

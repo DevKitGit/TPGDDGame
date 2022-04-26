@@ -3,22 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class OnSelectPopup : MonoBehaviour
 {
     // Start is called before the first frame update
     private CombatButton _combatButton;
-    private SpriteRenderer _spriteRenderer;
+    private SpriteRenderer _spriteRenderer, dividerSpriteRenderer;
+    [SerializeField] private Image image;
     [SerializeField] private TextMeshProUGUI header, description, leftBottom,leftDescriptor, rightBottom, rightDescriptor;
     
     public void SetupPopup()
     {
         _combatButton = transform.parent.GetComponent<CombatButton>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        dividerSpriteRenderer = GetComponentsInChildren<SpriteRenderer>().FirstOrDefault(e => e.name == "Square");
         _combatButton.m_OnSelect.AddListener(ShowPopup);
         _combatButton.m_OnDeselect.AddListener(HidePopup);
-        HidePopup();
+        HidePopup(null);
     }
     private void OnDestroy()
     {
@@ -26,9 +31,14 @@ public class OnSelectPopup : MonoBehaviour
         _combatButton.m_OnDeselect.RemoveListener(HidePopup);
     }
 
-    private void ShowPopup()
+    public void ShowPopup(BaseEventData arg0)
     {
+        if (image != null && image.sprite.name.Equals("SquareInsides"))
+        {
+            return;
+        }
         _spriteRenderer.color = Color.white;
+        dividerSpriteRenderer.color = Color.white;
         header.alpha = 1;
         header.ForceMeshUpdate();
         
@@ -49,9 +59,11 @@ public class OnSelectPopup : MonoBehaviour
 
     }
 
-    private void HidePopup()
+    public void HidePopup(BaseEventData arg0)
     {
         _spriteRenderer.color = Color.clear;
+        dividerSpriteRenderer.color = Color.clear;
+
         header.alpha = 0;
         header.ForceMeshUpdate();
         
@@ -81,8 +93,8 @@ public class OnSelectPopup : MonoBehaviour
         }
 
         header.text = ability.Name;
-        description.text = ability.Name;
-        rightBottom.text = ability.ActionCost == 0 ? "∞" : $"{ability.ChargesCurrent} / {ability.ChargesMax}";
+        description.text = ability.Description;
+        rightBottom.text = ability.ChargeCost == 0 ? "∞" : $"{ability.ChargesCurrent} / {ability.ChargesMax}";
         header.ForceMeshUpdate();
         description.ForceMeshUpdate();
         leftBottom.ForceMeshUpdate();
@@ -91,6 +103,8 @@ public class OnSelectPopup : MonoBehaviour
 
     public void PopulateIntentPopup(Intent intent)
     {
+        if (!intent.origin.Alive) return;
+        
         header.text = intent.origin.name;
         if (intent.origin is Player playerIntent)
         {
@@ -98,7 +112,15 @@ public class OnSelectPopup : MonoBehaviour
         }
         else
         {
-            description.text = $"{intent.origin.name} intends to use {intent.abilities[0].Name} on {intent.targets[0]}";     
+            if (intent.targets[0].UnitOnTile == null)
+            {
+                description.text = $"{intent.origin.name} is trying to walk towards you!"; 
+            }
+            else
+            {
+                description.text = $"{intent.origin.name} intends to use {intent.abilities[0].Name} on the {intent.targets[0].UnitOnTile.UnitName}"; 
+            }
+                
         }
 
         leftBottom.text = "";

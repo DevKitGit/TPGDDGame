@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1adf6540db947b29c79953c15c6742d, type: 3}
+  m_Name: MinotaurAttack
+  m_EditorClassIdentifier: 
+  Name: Overwhelming Strike
+  Description: 
+  sprite: {fileID: 0}
+  ActionCost: 0
+  ChargesCurrent: 0
+  ChargesMax: 0
+  Effects:
+  - {fileID: 11400000, guid: 5f3c30286dd025540b6592d61a30ae46, type: 2}
+  - {fileID: 11400000, guid: 94b4d0d5f3e7e3b4c9e5dd32b7773ac7, type: 2}
+  Ranged: 0
+  Radius: 0
+  ProjectilePrefab: {fileID: 0}
+  TargetVisualEffect: {fileID: 0}
+  ProjectileSpeed: 0
+  AttackTimeNormalized: 0.5
+  targetType: 0
+  ProjectileAudio:
+    <Name>k__BackingField: 
+    <Clip>k__BackingField: {fileID: 0}
+  TargetAudio:
+    <Name>k__BackingField: 
+    <Clip>k__BackingField: {fileID: 8300000, guid: 47dfdc15e883ec34f8f1837afad27a57, type: 3}

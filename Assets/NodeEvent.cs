@@ -1,12 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Dreamteck.Splines;
-using TreeEditor;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEditor.PackageManager;
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -18,12 +14,14 @@ public class NodeEvent : MonoBehaviour
     [SerializeField] private GameObject eventPrefab;
     [SerializeField] private WorldEvent worldEvent;
     [SerializeField] private bool eventLocked = false;
+    [SerializeField] private SplineComputer transportSpline;
+
     private Node node;
     private SplineFollower party;
     private bool eventExpended = false;
     private GameObject _instance;
     private PlayerControls controls;
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -55,7 +53,7 @@ public class NodeEvent : MonoBehaviour
 
     private void DisplayLockEvent()
     {
-        Debug.Log("lock event");
+        //Debug.Log("lock event");
     }
 
     private void DisplayEvent()
@@ -111,8 +109,19 @@ public class NodeEvent : MonoBehaviour
                 worldEvent = worldEvent.nextEvent;
                 DisplayEvent();
                 break;
+            case Choice.ChoiceOptions.Enter:
+                if (transportSpline != null)
+                {
+                    party.spline = transportSpline;
+                    party.SetDistance(0.05f);
+                    party.direction = Spline.Direction.Backward;
+                    FindObjectOfType<Camera>().GetComponent<ConstrainedCameraFollower>().TransitionToMap(party.spline.transform.parent.gameObject.GetComponent<SpriteRenderer>());
+                }
+                
+                break;
             case Choice.ChoiceOptions.None:
                 break;
+            
             default:
                 throw new ArgumentOutOfRangeException();
         }

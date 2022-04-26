@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -13,7 +15,17 @@ public class CharacterUIHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI characterDescription;
     // Start is called before the first frame update
     [SerializeField] private Player _currentlyActivePlayer;
-    
+    [SerializeField] private AbilitySlot lastAbilitySlot;
+    private void Start()
+    {
+        var combatButtons = abilitySlots.Select(abilitySlot => abilitySlot.GetComponent<CombatButton>()).ToList();
+        combatButtons.ForEach(combatButton => combatButton.m_OnSelect.AddListener(delegate
+        {
+            ReceiveAbilityPress(combatButton.GetComponent<AbilitySlot>());
+        }));
+        lastAbilitySlot = abilitySlots[0];
+    }
+
     public void UpdatePlayerUI(Player player)
     {
         for (int i = 0; i < abilitySlots.Count; i++)
@@ -32,7 +44,14 @@ public class CharacterUIHandler : MonoBehaviour
 
     public void SetAvailable(bool available)
     {
-        abilitySlots.ForEach(abilitySlot => abilitySlot.SetAvailable(available));
+        if (!available)
+        {
+            abilitySlots.ForEach(abilitySlot => abilitySlot.SetAvailable(available));
+        }
+        else
+        {
+            abilitySlots.ForEach(abilitySlot => abilitySlot.SetAvailable(abilitySlot._slottedAbility.Castable()));
+        }
         characterArtSlot.color = available ? Color.white : Color.gray;
         
         //characterName.color = available ? Color.white : Color.gray;
@@ -40,9 +59,22 @@ public class CharacterUIHandler : MonoBehaviour
         //characterDescription.color = available ? Color.white : Color.gray;
         //characterDescription.ForceMeshUpdate();
     }
-
-    public void ReceiveAbilityPress(int index)
+    
+    public void ReceiveAbilityPress(AbilitySlot abilitySlot)
     {
-        _currentlyActivePlayer?.SetSelectedAbility(index);
+        if (_currentlyActivePlayer != null)
+        {
+            if (_currentlyActivePlayer.abilities[abilitySlot._slottedAbilityIndex].Castable())
+            {
+                _currentlyActivePlayer.SetSelectedAbility(abilitySlot._slottedAbilityIndex);
+                lastAbilitySlot.GetComponentInChildren<OnSelectPopup>().HidePopup(null);
+            }
+            lastAbilitySlot = abilitySlot;
+        }
+    }
+
+    public void UnhidePopup(int index)
+    {
+        abilitySlots[index].GetComponentInChildren<OnSelectPopup>().ShowPopup(null);
     }
 }

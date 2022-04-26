@@ -10,14 +10,19 @@ public class ConstrainedCameraFollower : MonoBehaviour
     private Camera _camera;
     [SerializeField] private SpriteRenderer MapSpriteRenderer;
 
-    [SerializeField] private float m_xMin, m_xMax, m_yMin, m_yMax;
+    private float m_xMin, m_xMax, m_yMin, m_yMax;
 
-    [SerializeField] private float c_xMin, c_xMax, c_yMin, c_yMax,c_xSize, c_ySize;
+    private float c_xMin, c_xMax, c_yMin, c_yMax,c_xSize, c_ySize;
     private Vector3 clampedPosition = Vector3.zero;
     // Start is called before the first frame update
     void Start()
     {
         _camera = Camera.main;
+        SetupCamera();
+    }
+
+    public void SetupCamera()
+    {
         _partyTransform = FindObjectOfType<SplineFollower>().gameObject.transform;
         SetMapConstraints();
         var bounds = _camera.ScreenToWorldPoint(new Vector3(Screen.width, 0, _camera.transform.position.z));
@@ -29,7 +34,6 @@ public class ConstrainedCameraFollower : MonoBehaviour
         c_ySize = (c_yMax - c_yMin) / 2;
         c_xSize = (c_xMax - c_xMin) / 2;
     }
-
     public void SetMapConstraints()
     {
         var bounds = MapSpriteRenderer.bounds;
@@ -41,6 +45,8 @@ public class ConstrainedCameraFollower : MonoBehaviour
     public void TransitionToMap(SpriteRenderer spriteRenderer)
     {
         MapSpriteRenderer = spriteRenderer;
+        SetMapConstraints();
+        GetComponentInChildren<PlayOnMapChange>().PlayNextMapClip();
     }
     // Update is called once per frame
     void Update()

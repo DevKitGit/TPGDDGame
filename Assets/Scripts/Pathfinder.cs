@@ -234,25 +234,28 @@ public class Pathfinder
     //Calling this with a radius of 1 will yield a a list containing tiles from origin *radius* steps in every direction
     public List<Tile> FindRangedNeighbours(Tile origin, int radius)
     {
-        var neighbors = new List<Tile>{origin};
-        Vector3Int neighbor;
+        var result = new List<Tile>{origin};
+        var iterationNeighbours = new List<Tile>();
         var directions = (origin.Position_grid.y % 2) == 1? 
             evenDirs: 
             oddDirs;
         while (radius > 0)
         {
-            foreach (var n in neighbors)
+            iterationNeighbours = result.ToList();
+            foreach (var tile in iterationNeighbours)
             {
-                foreach (var direction in directions)
+                var neighbors = Neighbors(tile);
+                foreach (var neighbor in neighbors)
                 {
-                    neighbor = n.Position_grid + direction;
-                    if (!InBounds(neighbor) && !neighbors.Contains(Grid[Index(neighbor)])) continue;
-                    neighbors.Add(Grid[Index(neighbor)]);
+                    if (!result.Contains(neighbor))
+                    {
+                        result.Add(neighbor);
+                    }
                 }
             }
             radius--;
         }
-        return neighbors;
+        return result;
     }
 
     public List<Tile> FindMeleeNeighbours(Tile origin, Tile target, int radius)
@@ -282,24 +285,47 @@ public class Pathfinder
         return neighbors;
     }
     
-    public Tile FindNearestAngleTile(Tile origin, Vector2 direction, List<Tile> target,float AngleThreshhold)
+    public Tile FindNearestAngleTile(Tile origin, Vector2 direction, List<Tile> target,float AngleThreshhold, bool allowOneMove = false)
     {
         var smallestVal = float.PositiveInfinity;
         Tile nearestTile = null;
-        foreach (var t in target)
+        if (!allowOneMove)
         {
-            var tileXY = 
-                new Vector2(t.Position_world.x, t.Position_world.y) - 
-                new Vector2(origin.Position_world.x, origin.Position_world.y);
-            
-            var angleDiff = Vector2.Angle(direction, tileXY.normalized);
-            
-            if (angleDiff <= smallestVal && angleDiff <= AngleThreshhold)
+            var n = Neighbors(origin);
+            n.RemoveAll(e => !target.Contains(e));
+            foreach (var t in n)
             {
-                smallestVal = angleDiff;
-                nearestTile = t;
+                var tileXY = 
+                    new Vector2(t.Position_world.x, t.Position_world.y) - 
+                    new Vector2(origin.Position_world.x, origin.Position_world.y);
+            
+                var angleDiff = Vector2.Angle(direction.normalized, tileXY.normalized);
+            
+                if (angleDiff <= smallestVal && angleDiff <= AngleThreshhold)
+                {
+                    smallestVal = angleDiff;
+                    nearestTile = t;
+                }
             }
         }
+        else
+        {
+            foreach (var t in target)
+            {
+                var tileXY = 
+                    new Vector2(t.Position_world.x, t.Position_world.y) - 
+                    new Vector2(origin.Position_world.x, origin.Position_world.y);
+            
+                var angleDiff = Vector2.Angle(direction.normalized, tileXY.normalized);
+            
+                if (angleDiff <= smallestVal && angleDiff <= AngleThreshhold)
+                {
+                    smallestVal = angleDiff;
+                    nearestTile = t;
+                }
+            }
+        }
+        
         return nearestTile;
     }
     

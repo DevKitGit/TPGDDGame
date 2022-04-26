@@ -64,7 +64,8 @@ public abstract class Unit : MonoBehaviour, ITurnResponder
     [SerializeField] protected bool SelectPhaseActive;
     [SerializeField] protected bool MovePhaseThisTurn, MovePhaseActive, MovePhaseDone;
     [SerializeField] protected bool ActionPhaseThisTurn, ActionPhaseActive, ActionPhaseDone;
-    
+    [SerializeField] protected Audio onHit, onDeath, onMove, onStunned;
+    protected AudioSource _MoveSource;
     protected List<Effect> appliedEffects = new();
     protected Stack<Tile> currentPath;
     public CombatBoardManager _combatBoardManager;
@@ -95,15 +96,18 @@ public abstract class Unit : MonoBehaviour, ITurnResponder
 
     public void ReceiveEffect(List<Effect> effects)
     {
+        AudioManager.Play(onHit, targetParent: gameObject);
         animator.SetTrigger(HitString);
         foreach (var effect in effects)
         {
             if (effect.ApplyImmediately)
             {
+                
                 if (!ApplySingleEffect(effect))
                 {
                     //Unit died while applying effects, so stop applying more(prevents possible weird behavior)
                     Alive = false;
+                    AudioManager.Play(onDeath, targetParent: gameObject);
                     animator.SetBool(AliveString,false);
                     break;
                 }
@@ -113,6 +117,11 @@ public abstract class Unit : MonoBehaviour, ITurnResponder
     }
     public void ApplyEffects()
     {
+
+        if (appliedEffects.Count(effect => effect.EffectDurationInTurns >= 1) > 0)
+        {
+            AudioManager.Play(onHit, targetParent: gameObject);
+        }
         foreach (var effect in appliedEffects.Where(effect => effect.EffectDurationInTurns >= 1))
         {
             effect.EffectDurationInTurns--;
@@ -196,12 +205,16 @@ public abstract class Unit : MonoBehaviour, ITurnResponder
     
     public bool ApplyMoves(float change)
     {
-        CombatMoves = Math.Clamp(CombatMoves + change, 0, MaxCombatMoves);
-        return CombatMoves != 0f;
+        CombatMoves = Math.Clamp(CombatMoves + change, 1, MaxCombatMoves);
+        return CombatMoves > 0f;
     }
 
     public void SetDirection(Tile destination, Tile origin = null)
     {
+        if (destination == null)
+        {
+            return;
+        }
         if (origin == null)
         {
             SetDirection(_combatBoardManager.GetTile(tilePosition).Position_world, destination.Position_world);

@@ -1,16 +1,11 @@
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Dreamteck.Splines;
-using Unity.Mathematics;
-using Unity.VisualScripting;
-using UnityEditor.Rendering.LookDev;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
-using Debug = UnityEngine.Debug;
+
 
 public class Pathpicker : MonoBehaviour
 {
@@ -23,8 +18,11 @@ public class Pathpicker : MonoBehaviour
     Node.Connection[] _connections;
     private int currentDirectionIndex = 0;
     private PlayerController _playerController;
-    private float followSpeedHolder; 
-    void Start()
+    private float followSpeedHolder;
+    [SerializeField] private Audio travellingSound;
+    private AudioSource _audioSource;
+    private float timesinceAudioStart;
+    void Awake()
     {
         arrows = new List<GameObject>();
         _connections = new Node.Connection[] { };
@@ -34,6 +32,7 @@ public class Pathpicker : MonoBehaviour
         followSpeedHolder = splineFollower.followSpeed;
         splineFollower.SetPercent(0.01);
         splineFollower.direction = Spline.Direction.Backward;
+
     }
     
     private void PlayerJoined(List<PlayerController> playerControllers)
@@ -88,6 +87,12 @@ public class Pathpicker : MonoBehaviour
                 
                 splineFollower.followSpeed = followSpeedHolder;
                 ReadyToMove = false;
+                if (_audioSource != null)
+                {
+                    Destroy(_audioSource.gameObject);
+                }
+                _audioSource = AudioManager.Play(travellingSound, true, targetParent: gameObject);
+                timesinceAudioStart = Time.time;
                 foreach (var arrowDirection in FindObjectsOfType<ArrowDirection>())
                 {
                     Destroy(arrowDirection.gameObject);
@@ -122,6 +127,12 @@ public class Pathpicker : MonoBehaviour
     private void NodeReached(List<SplineTracer.NodeConnection> passed)
     {
         currentDirectionIndex = -1;
+        if (_audioSource != null && Time.time-timesinceAudioStart > 0.1f)
+        {
+            _audioSource.Stop();
+            Destroy(_audioSource.gameObject);
+        }
+        
         ReadyToMove = splineFollower.GetPercent() == 1.0f || splineFollower.GetPercent() == 0.0;
         if (!ReadyToMove)
         {

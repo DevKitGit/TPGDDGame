@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1adf6540db947b29c79953c15c6742d, type: 3}
+  m_Name: Entangled
+  m_EditorClassIdentifier: 
+  Name: Entangled
+  Description: An enchanted arrow covers the targets feet with vine, slowing them
+    for 2 turns
+  sprite: {fileID: 21300000, guid: 87658d97f875b3d49a2d04b2bfbffcaf, type: 3}
+  ActionCost: 1
+  ChargesCurrent: 3
+  ChargesMax: 3
+  Effects:
+  - {fileID: 11400000, guid: 054bfe31b52f6b040bf2a043fbacc6b6, type: 2}
+  Ranged: 1
+  Radius: 0
+  ProjectilePrefab: {fileID: 6904552976416724454, guid: 94a4eda682bdce949b67e8b8ce030ff9, type: 3}
+  TargetVisualEffect: {fileID: 0}
+  ProjectileSpeed: 0.05
+  AttackTimeNormalized: 0.735
+  targetType: 3
+  ProjectileAudio:
+    <Name>k__BackingField: 
+    <Clip>k__BackingField: {fileID: 8300000, guid: 6541de23ece467340b5c26efc43af6e7, type: 3}
+  TargetAudio:
+    <Name>k__BackingField: 
+    <Clip>k__BackingField: {fileID: 8300000, guid: 014f84375e8ddf7468a5e602a30c95b9, type: 3}

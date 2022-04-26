@@ -35,7 +35,7 @@ public class Enemy : Unit
     public List<Tile> FindTarget()
     {
         var targets = FindObjectsOfType<Unit>().ToList();
-        targets.RemoveAll(t => t.AllyFaction == AllyFaction);
+        targets.RemoveAll(t => t.AllyFaction == AllyFaction || !t.Alive);
         Stack<Tile> closestTargetPath = new Stack<Tile>();
         foreach (var target in targets)
         {
@@ -49,7 +49,6 @@ public class Enemy : Unit
             
             if (closestTargetPath != null || closestTargetPath.Count == 0 || targetPath.ToList()[Index.End].Cost <= closestTargetPath.ToList()[Index.End].Cost)
             {
-                
                 closestTargetPath = targetPath;
             }
         }
@@ -69,10 +68,25 @@ public class Enemy : Unit
     public override Task<bool> DoTurn()
     {
         Tcs = new TaskCompletionSource<bool>();
-        turnActive = true;
         HasAttacked = false;
+        BeginTurn();
         BeginMovePhase();
         return Tcs.Task;
+    }
+    
+    public void BeginTurn()
+    {
+        ApplyMoves(MaxCombatMoves);
+        SelectPhaseActive = true;
+        
+        MovePhaseThisTurn = true;
+        ActionPhaseThisTurn = true;
+        
+        MovePhaseDone = false;
+        ActionPhaseDone = false;
+        
+        MovePhaseActive = false;
+        ActionPhaseActive = false;
     }
     
     public void BeginMovePhase()
@@ -86,7 +100,7 @@ public class Enemy : Unit
             return;
         }
         currentPath = _combatBoardManager.Pathfinder.FindPathDFS(tilePosition, Intent.targets[0].Position_grid);
-        if (currentPath != null && currentPath.Count > 0)
+        if (currentPath != null && currentPath.Count > 0 && currentPath.Peek() != _combatBoardManager.GetTile(tilePosition) && currentPath.Peek().Cost < MaxCombatMoves+2)
         {
             if (!currentPath.TryPeek(out _targetTile))
             {
@@ -97,7 +111,13 @@ public class Enemy : Unit
             }
             MovePhaseActive = true;
             animator.SetBool(WalkingString,currentPath.Peek().UnitOnTile == null);
+            turnActive = true;
             SetDirection(gameObject.transform.position, _targetTile.Position_world);
+            if (_MoveSource != null)
+            {
+                Destroy(_MoveSource.gameObject);
+            }
+            _MoveSource = AudioManager.Play(onMove, true, targetParent: gameObject);
         }
         else
         {
@@ -112,10 +132,12 @@ public class Enemy : Unit
         if (!turnActive || !Alive) return;
         if (MovePhaseActive)
         {
+            print("m");
             Move();
         }
         else if (ActionPhaseActive)
         {
+            print("a");
             Attack(); 
             
         }
@@ -123,36 +145,42 @@ public class Enemy : Unit
 
     public void Move()
     {
-        if (!currentPath.TryPeek(out _targetTile) || _targetTile.Position_grid == tilePosition)
+        if (!currentPath.TryPeek(out _targetTile) || currentPath.Count == 0 || _targetTile.Position_grid == tilePosition)
         {
             MovePhaseDone = true;
             MovePhaseActive = false;
             animator.SetBool(WalkingString,false);
             currentPath.Clear();
             ActionPhaseActive = true;
+            if (_MoveSource != null)
+            {
+                Destroy(_MoveSource.gameObject);
+            }
             return;
         }
 
         //another tile exists, move towards that
         transform.position = Vector3.MoveTowards(
             transform.position, 
-            _targetTile.Position_world,
+            _targetTile.Position_world+ _combatBoardManager._tileMap.tileAnchor,
             Time.deltaTime * movementSpeed);
 
-        if (!(Vector3.Distance(transform.position, _targetTile.Position_world) < 0.01f))
+        if (!(Vector3.Distance(transform.position, _targetTile.Position_world+ _combatBoardManager._tileMap.tileAnchor) < 0.05f))
         {
             return;
         }
         //if a tile has been reached, pop it and set direction towards new one.
         _combatBoardManager.GetTile(tilePosition).UnitOnTile = null;
+        print("here");
         _targetTile.UnitOnTile = this;
         tilePosition = _targetTile.Position_grid;
-        transform.position = _combatBoardManager._tileMap.CellToWorld(tilePosition);
+        transform.position = _combatBoardManager._tileMap.CellToWorld(tilePosition) + _combatBoardManager._tileMap.tileAnchor;
         currentPath.TryPop(out _);
         if (currentPath.TryPeek(out _targetTile))
         {
-            SetDirection(transform.position, _combatBoardManager._tileMap.CellToWorld(_targetTile.Position_grid));
+            SetDirection(transform.position, _combatBoardManager._tileMap.CellToWorld(_targetTile.Position_grid) + _combatBoardManager._tileMap.tileAnchor);
         }
+        
     }
 
     public void Attack()
@@ -171,14 +199,13 @@ public class Enemy : Unit
         Intent.targets[0] = tileWithUnit;
         SetDirection(transform.position, Intent.targets[0].Position_world);
         animator.SetTrigger(AttackString);
-
     }
 
     private void SetupAttackEvent()
     {
         var clip = animator.runtimeAnimatorController.animationClips.FirstOrDefault(aclip =>
             aclip.name.ToLower().Contains("attack"));
-        if (clip == null) return;
+        if (clip == null || clip.events.Length != 0) return;
         var animationEvent = new AnimationEvent
         {
             time = clip.length * attackTimeNormalized, 
@@ -193,7 +220,10 @@ public class Enemy : Unit
         {
             return;
         }
-
+        if (Intent.abilities[0].TargetAudio != null)
+        {
+            AudioManager.Play(Intent.abilities[0].TargetAudio, targetParent: gameObject);
+        }
         HasAttacked = true;
         Intent.targets[0].UnitOnTile.ReceiveEffect(Intent.abilities[0].Effects);
         EndTurn();

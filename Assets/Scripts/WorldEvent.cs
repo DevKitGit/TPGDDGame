@@ -25,6 +25,7 @@ public class Choice
         Loot,
         RunAway,
         NextChoice,
+        Enter,
         None
     }
     public ChoiceOptions choiceOption;

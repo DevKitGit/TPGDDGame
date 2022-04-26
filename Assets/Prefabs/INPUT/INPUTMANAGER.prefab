@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 6049561073137940259}
   - component: {fileID: 3657218819031443383}
   - component: {fileID: 2414448169021179733}
-  - component: {fileID: 1394192732}
-  - component: {fileID: 1394192731}
+  - component: {fileID: 1613599157}
+  - component: {fileID: 1613599158}
   m_Layer: 0
   m_Name: INPUTMANAGER
   m_TagString: Untagged
@@ -47,9 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29abd420dececee468c18289b365a934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <InputSystem>k__BackingField: {fileID: 1394192731}
+  <InputSystem>k__BackingField: {fileID: 1613599157}
   <PlayerInputManager>k__BackingField: {fileID: 2414448169021179733}
-  <EventSystem>k__BackingField: {fileID: 1394192732}
+  <EventSystem>k__BackingField: {fileID: 1613599158}
 --- !u!114 &2414448169021179733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,23 +94,7 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
---- !u!114 &1394192732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8252026637966536330}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b16c6f78230fa4964a222622d8aae332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
-  m_PlayerRoot: {fileID: 8252026637966536330}
---- !u!114 &1394192731
+--- !u!114 &1613599157
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,16 +109,31 @@ MonoBehaviour:
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
   m_XRTrackingOrigin: {fileID: 0}
-  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MoveAction: {fileID: 3710738434707379630, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_LeftClickAction: {fileID: 8056856818456041789, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_DeselectOnBackgroundClick: 0
+  m_ActionsAsset: {fileID: -944628639613478452, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+  m_PointAction: {fileID: -5519245651510008520, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+  m_MoveAction: {fileID: -5125026720005497698, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+  m_SubmitAction: {fileID: 7428320963567742654, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+  m_CancelAction: {fileID: -979432451996524628, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+  m_LeftClickAction: {fileID: 7755377492337430788, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+  m_MiddleClickAction: {fileID: 5226699220686237000, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+  m_RightClickAction: {fileID: -372773728024878028, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+  m_ScrollWheelAction: {fileID: -3260629443214196809, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+  m_TrackedDevicePositionAction: {fileID: -478141775403813129, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 537171196058635704, guid: bcbded33c8220334c8f4dc9fe058742c, type: 3}
+  m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
+--- !u!114 &1613599158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8252026637966536330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10

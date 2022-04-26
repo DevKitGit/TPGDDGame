@@ -60,7 +60,7 @@ public class AudioManager : MonoBehaviour
 		}
 	}
 
-	public static AudioSource Play(Audio audio, bool looping = false, string audioMixerGroup = "SFX")
+	public static AudioSource Play(Audio audio, bool looping = false, string audioMixerGroup = "SFX", GameObject targetParent = null)
 	{
 		if (audio == null)
 		{
@@ -68,6 +68,10 @@ public class AudioManager : MonoBehaviour
 		}
 		
 		GameObject gameObject = new GameObject("One shot audio");
+		if (targetParent !=  null)
+		{
+			gameObject.transform.parent = targetParent.transform;
+		}
 		AudioSource audioSource = (AudioSource) gameObject.AddComponent(typeof (AudioSource));
 		audioSource.clip = audio.Clip;
 		audioSource.spatialBlend = 0;
@@ -75,7 +79,11 @@ public class AudioManager : MonoBehaviour
 		audioSource.Play();
 		audioSource.loop = looping;
 		audioSource.outputAudioMixerGroup = GameManager.Assets.Mixer.FindMatchingGroups(audioMixerGroup).FirstOrDefault();
-		DontDestroyOnLoad(audioSource.gameObject);
+		if (targetParent == null)
+		{
+			DontDestroyOnLoad(audioSource.gameObject);
+		}
+		
 		if(!looping)
 		{
 			Object.Destroy(gameObject, audio.Clip.length * (Time.timeScale < 0.00999999977648258 ? 0.01f : Time.timeScale));

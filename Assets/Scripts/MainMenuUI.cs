@@ -107,13 +107,10 @@ public class MainMenuUI : MonoBehaviour
     }
     private static void ExitGame()
     {
-        if (Application.isEditor)
-        {
-            EditorApplication.ExitPlaymode();
-        }
-        else
-        {
-            Application.Quit(0);
-        }
+        #if UNITY_EDITOR
+          EditorApplication.ExitPlaymode();
+          return;
+        #endif
+        Application.Quit(0);
     }
 }

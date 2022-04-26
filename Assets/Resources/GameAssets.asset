@@ -15,21 +15,19 @@ MonoBehaviour:
   <PlayerAssets>k__BackingField:
   - {fileID: 11400000, guid: 871eb8c0b2ae8e44db4c0eb5385999a2, type: 2}
   - {fileID: 11400000, guid: b15ce4e1d163ab34c9451ddd42dd87dc, type: 2}
-  - {fileID: 11400000, guid: 3ad5037ea959f4f4eba699fd68bc8b19, type: 2}
-  - {fileID: 11400000, guid: 5e120e23a8af33b489d51459f32ecc21, type: 2}
   <Audios>k__BackingField:
   - <Name>k__BackingField: squish-1
-    <Clip>k__BackingField: {fileID: 8300000, guid: 396b7f8875688d44c8ad99411fcb63d4, type: 3}
+    <Clip>k__BackingField: {fileID: 8300000, guid: ce964691eab829744a06475a4c0e57a8, type: 3}
   - <Name>k__BackingField: squish-2
-    <Clip>k__BackingField: {fileID: 8300000, guid: 73b524fc20784924b81028c7bf3a0e0f, type: 3}
+    <Clip>k__BackingField: {fileID: 8300000, guid: ce964691eab829744a06475a4c0e57a8, type: 3}
   - <Name>k__BackingField: squish-3
-    <Clip>k__BackingField: {fileID: 8300000, guid: b9ecdd26c2582bd4f92a738754997dc8, type: 3}
+    <Clip>k__BackingField: {fileID: 8300000, guid: ce964691eab829744a06475a4c0e57a8, type: 3}
   - <Name>k__BackingField: sizzle-1
-    <Clip>k__BackingField: {fileID: 8300000, guid: 71ca03a390ca6524ea888a7c8400edc7, type: 3}
+    <Clip>k__BackingField: {fileID: 8300000, guid: ce964691eab829744a06475a4c0e57a8, type: 3}
   - <Name>k__BackingField: back-1
-    <Clip>k__BackingField: {fileID: 8300000, guid: 16a20c3fbf08e534d91cc44a5acd31eb, type: 3}
+    <Clip>k__BackingField: {fileID: 8300000, guid: d88db515502a7694f886e8d0d7ebb06d, type: 3}
   - <Name>k__BackingField: erotic-sexy
-    <Clip>k__BackingField: {fileID: 8300000, guid: 1507ea0a94d56dc4d953f98b0f0e2525, type: 3}
+    <Clip>k__BackingField: {fileID: 0}
   - <Name>k__BackingField: ben-sexy
-    <Clip>k__BackingField: {fileID: 8300000, guid: 512631251dfa98c4fb3aaf441c5c6656, type: 3}
+    <Clip>k__BackingField: {fileID: 0}
   <Mixer>k__BackingField: {fileID: 24100000, guid: de66e883fcf97ca41a8012b653b7ff5a, type: 2}

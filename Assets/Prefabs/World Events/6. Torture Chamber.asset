@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0d233e31a5c00044ad44b40f2484d66, type: 3}
+  m_Name: 6. Torture Chamber
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: e94e309b3ba458348b21ea8114b887f7, type: 3}
+  choices:
+  - choiceOption: 0
+    choiceDescription: Fight the chamber
+  - choiceOption: 2
+    choiceDescription: Leave
+  CombatTemplate: {fileID: 11400000, guid: ba0041ac54af49b429e93126ddcccdaf, type: 2}
+  nextEvent: {fileID: 0}

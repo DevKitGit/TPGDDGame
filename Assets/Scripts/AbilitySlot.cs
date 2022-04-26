@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class AbilitySlot : MonoBehaviour
 {
     [SerializeField] public Ability _slottedAbility;
+    [SerializeField] public int _slottedAbilityIndex;
     [SerializeField] private Image _Abilityimage;
     [SerializeField] private TextMeshProUGUI _abilityCost;
     [SerializeField] private TextMeshProUGUI _abilityCharges;
@@ -26,7 +27,8 @@ public class AbilitySlot : MonoBehaviour
         _slottedAbility = ability;
         _button = GetComponent<Button>();
         _Abilityimage.sprite = ability.sprite;
-        _abilityCost.text = ability.ActionCost.ToString();
+        _abilityCost.text = ability.ChargeCost == 0 ? "∞" : ability.ChargeCost.ToString();
+        
         _abilityCharges.text = $"{ability.ChargesCurrent.ToString()}/{ability.ChargesMax.ToString()}";
         
         popup.PopulateAbilityPopup(ability);

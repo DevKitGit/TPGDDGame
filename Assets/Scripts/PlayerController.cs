@@ -1,10 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using Unity.VisualScripting;
-using UnityEditor.Rendering.LookDev;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
@@ -111,6 +108,7 @@ public class PlayerController : MonoBehaviour
     public Action<InputAction.CallbackContext> UITrackedDevicePosition = delegate(InputAction.CallbackContext context) {  };
     public Action<InputAction.CallbackContext> UITrackedDeviceOrientation = delegate(InputAction.CallbackContext context) {  };
     public Action<InputAction.CallbackContext> UIJoin = delegate(InputAction.CallbackContext context) {  };
+    private bool uienabled;
 
 
     void Awake()
@@ -137,6 +135,25 @@ public class PlayerController : MonoBehaviour
         _controls.Disable();
         AssignActions();
         
+    }
+    
+    private void EnableUIInput(bool enabled, GameObject target = null)
+    {
+        var inputModule = InputManager.Instance.gameObject.GetComponent<InputSystemUIInputModule>();
+        uienabled = enabled;
+        if (enabled)
+        {
+            inputModule.UnassignActions();
+            inputModule.AssignDefaultActions();
+            inputModule.actionsAsset = PlayerInput.actions;
+            InputManager.Instance.EventSystem.SetSelectedGameObject(target);
+            inputModule.ActivateModule();
+        }
+        else
+        {
+            inputModule.UnassignActions();
+            InputManager.Instance.EventSystem.SetSelectedGameObject(null);
+        }
     }
 
     private void UnassignActions()

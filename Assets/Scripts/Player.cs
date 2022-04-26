@@ -35,6 +35,9 @@ public class Player : Unit
     private bool SelectedAbilityChangedThisFrame;
     private bool ActionSelectPhaseActive;
     private bool uienabled = false;
+    private GameObject SavedSelectedGameObject;
+    private bool ActionMovePhase = false;
+    private AnimationClip moveClip;
 
     private void Start()
     {
@@ -49,11 +52,20 @@ public class Player : Unit
     {
         if (turnActive)
         {
+            var previousIndex = abilities.IndexOf(SelectedAbility);
+            if (previousIndex != -1)
+            {
+                FindObjectOfType<CharacterUIHandler>().UnhidePopup(previousIndex);
+            }
+            
             SelectedAbilityChangedThisFrame = SelectedAbility == abilities[index];
+            
             SelectedAbility = abilities[index];
-            FindActionTargetTiles();
+            
+            
         }
     }
+    
     private void SetupAttackEvent()
     {
         
@@ -62,7 +74,7 @@ public class Player : Unit
             var animationClipName = "Attack" + i;
             var clip = animator.runtimeAnimatorController.animationClips.FirstOrDefault(aclip =>
                 aclip.name == animationClipName);
-            if (clip == null) continue;
+            if (clip == null || clip.events.ToList().Count != 0) continue;
             var animationEvent = new AnimationEvent
             {
                 time = clip.length * abilities[i].AttackTimeNormalized, 
@@ -84,14 +96,34 @@ public class Player : Unit
         playerController.CombatInteract += OnInteract;
         playerController.CombatGridMoveReset += OnMoveReset;
         playerController.CombatUIEnter += OnUIEnter;
+        playerController.CombatCancel += OnCancel;
     }
 
-    private void UnassignActions()
+    private void OnCancel(InputAction.CallbackContext context)
+    {
+        if (context.performed && turnActive && !uienabled && SelectedAbility != null)
+        {
+            var target = FindObjectsOfType<AbilitySlot>().FirstOrDefault(a => a._slottedAbilityIndex == abilities.IndexOf(SelectedAbility))?.gameObject;
+            EnableUIInput(true,SavedSelectedGameObject);
+            playerController.PlayerInput.ActivateInput();
+            FindObjectOfType<CharacterUIHandler>().UnhidePopup(abilities.IndexOf(SelectedAbility));
+            _actionTargetTiles?.ForEach(e => e.IndicatorTile.SetIndicator(IndicatorTile.Indicator.Default));
+        }
+    }
+
+    private void OnDestroy()
+    {
+        UnassignActions();
+    }
+
+    public void UnassignActions()
     {
         playerController.CombatGridMove -= OnMove;
         playerController.CombatInteract -= OnInteract;
         playerController.CombatGridMoveReset -= OnMoveReset;
         playerController.CombatUIEnter -= OnUIEnter;
+        playerController.CombatCancel -= OnCancel;
+
     }
 
     private void OnUIEnter(InputAction.CallbackContext context)
@@ -155,33 +187,38 @@ public class Player : Unit
             FindObjectOfType<CharacterUIHandler>().UpdatePlayerUI(this);
             
             turnActive = true;
+            tilesWithinReach = _combatBoardManager.Pathfinder.FindWalkableBFS(tilePosition, CombatMoves).ToList();
+            tilesWithinReach.ToList().ForEach(tile => tile.IndicatorTile.SetIndicator(IndicatorTile.Indicator.WithinReach));
             //BeginMovePhase();
             //Invoke(nameof(EndTurn),1);
         }
         return Tcs.Task;
     }
 
-    private void EnableUIInput(bool enabled)
+    private void EnableUIInput(bool enabled,GameObject target = null)
     {
         var inputModule = InputManager.Instance.gameObject.GetComponent<InputSystemUIInputModule>();
         uienabled = enabled;
         if (enabled)
         {
+            
             inputModule.UnassignActions();
             inputModule.AssignDefaultActions();
             inputModule.actionsAsset = playerController.PlayerInput.actions;
-            InputManager.Instance.EventSystem.SetSelectedGameObject(FindObjectsOfType<AbilitySlot>().First(a => a._slottedAbility == abilities[0]).gameObject);
+            InputManager.Instance.EventSystem.SetSelectedGameObject(target);
             inputModule.ActivateModule();
+            InputManager.Instance.EventSystem.currentInputModule.UpdateModule();
         }
         else
         {
-            inputModule.UnassignActions();
+            SavedSelectedGameObject = InputManager.Instance.EventSystem.currentSelectedGameObject;
             InputManager.Instance.EventSystem.SetSelectedGameObject(null);
+            inputModule.UnassignActions();
         }
-        
     }
     private void BeginMovePhase()
     {
+        
     }
     
     public void OnMove(InputAction.CallbackContext context)
@@ -226,8 +263,11 @@ public class Player : Unit
     public void OnInteract(InputAction.CallbackContext context)
     {
         if (!context.performed || !turnActive) return;
+
         if (SelectPhaseActive && MovePhaseThisTurn && !MovePhaseActive && !MovePhaseDone)
         {            
+            AudioManager.Play(FindObjectOfType<CombatManager>().onButtonPress, targetParent: FindObjectOfType<CombatManager>().gameObject);
+
             //if select mode is enabled, and there is a movephase this turn that isn't done, then begin move phase
             _targetTile = currentlyHoveredTile;
             ApplyMoves(-_targetTile.Cost);
@@ -240,11 +280,63 @@ public class Player : Unit
             animator.SetBool(WalkingString,true);
             SelectPhaseActive = false;
             MovePhaseActive = true;
-        }else if (ActionSelectPhaseActive && MovePhaseDone && SelectedAbility != null)
+            if (_MoveSource != null)
+            {
+                Destroy(_MoveSource.gameObject);
+            }
+            _MoveSource = AudioManager.Play(onMove, true, targetParent: gameObject);
+        }else if (ActionSelectPhaseActive && MovePhaseDone && SelectedAbility != null && uienabled)
         {
-            animator.SetTrigger("Attack"+abilities.IndexOf(SelectedAbility));
-            turnActive = false;
+            AudioManager.Play(FindObjectOfType<CombatManager>().onButtonPress, targetParent: FindObjectOfType<CombatManager>().gameObject);
+
             EnableUIInput(false);
+            uienabled = false;
+            FindActionTargetTiles();
+            foreach (var tile in _actionTargetTiles)
+            {
+                tile.IndicatorTile.SetIndicator(SelectedAbility.targetType switch
+                {
+                    Ability.TargetType.self => IndicatorTile.Indicator.Ally,
+                    Ability.TargetType.ally => IndicatorTile.Indicator.Ally,
+                    Ability.TargetType.ground => IndicatorTile.Indicator.WithinReach,
+                    Ability.TargetType.enemy => IndicatorTile.Indicator.Enemy,
+                    Ability.TargetType.pet => IndicatorTile.Indicator.Ally,
+                    _ => throw new ArgumentOutOfRangeException(),
+                });
+
+            }
+            _actionTargetTiles.FirstOrDefault(e => e.UnitOnTile != null)?.IndicatorTile.SetIndicator(SelectedAbility.targetType switch
+            {
+                
+                Ability.TargetType.self => IndicatorTile.Indicator.SelectedAlly,
+                Ability.TargetType.ally => IndicatorTile.Indicator.SelectedAlly,
+                Ability.TargetType.ground => IndicatorTile.Indicator.ChosenPath,
+                Ability.TargetType.enemy => IndicatorTile.Indicator.SelectedEnemy,
+                Ability.TargetType.pet => IndicatorTile.Indicator.SelectedAlly,
+                _ => throw new ArgumentOutOfRangeException(),
+            });
+            var target = _actionTargetTiles.FirstOrDefault(e => e.UnitOnTile != null);
+            SetDirection(target == null ? _actionTargetTiles.FirstOrDefault() : target);
+        }
+        else if (ActionSelectPhaseActive && MovePhaseDone && SelectedAbility != null && _actionTargetTiles != null && _actionTargetTiles.Count > 0)
+        {
+            AudioManager.Play(FindObjectOfType<CombatManager>().onButtonPress, targetParent: FindObjectOfType<CombatManager>().gameObject);
+
+            animator.SetTrigger("Attack"+abilities.IndexOf(SelectedAbility));
+            var moveeffect = SelectedAbility.Effects.FirstOrDefault(e => e.effectType == Effect.EffectType.Move);
+            if (moveeffect != null)
+            {
+                ActionMovePhase = true;
+                moveClip = animator.runtimeAnimatorController.animationClips.FirstOrDefault(e =>
+                    e.name == "Attack" + abilities.IndexOf(SelectedAbility));
+            }
+            else
+            {
+                SetDirection(_targetTile);
+            }
+            ActionSelectPhaseActive = false;
+            turnActive = false;
+            //EnableUIInput(false,FindObjectsOfType<AbilitySlot>().First(a => a._slottedAbility == abilities[0]).gameObject);
         }
     }
 
@@ -255,7 +347,26 @@ public class Player : Unit
             SpawnRangedAttack();
             return;
         }
-        _targetTile.UnitOnTile.ReceiveEffect(SelectedAbility.Effects);
+
+        AudioManager.Play(SelectedAbility.TargetAudio,targetParent:gameObject);
+        if (SelectedAbility.Radius > 0)
+        {
+            var list = _combatBoardManager.Pathfinder.FindMeleeNeighbours(_combatBoardManager.GetTile(tilePosition), _targetTile,SelectedAbility.Radius);
+            list.ForEach(e =>
+            {
+                print(e.Position_grid);
+                if (e.UnitOnTile != null && e.UnitOnTile.AllyFaction == Faction.AI && e.UnitOnTile.Alive)
+                {
+                    
+                    _targetTile.UnitOnTile.ReceiveEffect(SelectedAbility.Effects);
+                }
+                
+            });
+        }
+        else
+        {
+            _targetTile.UnitOnTile.ReceiveEffect(SelectedAbility.Effects);
+        }
         _actionTargetTiles.ForEach(t => t.IndicatorTile.SetIndicator(IndicatorTile.Indicator.Default));
         EndTurn();
     }
@@ -263,7 +374,22 @@ public class Player : Unit
     public async void SpawnRangedAttack()
     {
         await SelectedAbility.SpawnProjectile(_combatBoardManager.GetTile(tilePosition), _targetTile);
-        _targetTile.UnitOnTile.ReceiveEffect(SelectedAbility.Effects);
+        if (SelectedAbility.Radius > 0)
+        {
+            var list = _combatBoardManager.Pathfinder.FindRangedNeighbours(_targetTile, SelectedAbility.Radius);
+            list.ForEach(e =>
+            {
+                if (e.UnitOnTile != null && e.UnitOnTile.AllyFaction == Faction.AI && e.UnitOnTile.Alive)
+                {
+                    e.UnitOnTile.ReceiveEffect(SelectedAbility.Effects);
+                }
+                
+            });
+        }
+        else
+        {
+            _targetTile.UnitOnTile.ReceiveEffect(SelectedAbility.Effects);
+        }
         _actionTargetTiles.ForEach(t => t.IndicatorTile.SetIndicator(IndicatorTile.Indicator.Default));
         EndTurn();
     }
@@ -293,7 +419,17 @@ public class Player : Unit
     }
     private void Update()
     {
-        if (!turnActive || !Alive) return;
+        if (!turnActive || !Alive)
+        {
+            if (ActionMovePhase)
+            {
+                ActionMove();
+            }
+            else
+            {
+                return;
+            }
+        }
         if (SelectPhaseActive && !MovePhaseActive && !ActionPhaseActive)
         {
             MoveGridIndicator();
@@ -308,6 +444,24 @@ public class Player : Unit
         }
     }
 
+    private void ActionMove()
+    {
+        if (Vector3.Distance(transform.position, _targetTile.Position_world) < 0.1f)
+        {
+            ActionMovePhase = false;
+            transform.position = _targetTile.Position_world;
+            _combatBoardManager.GetTile(tilePosition).UnitOnTile = null;
+            tilePosition = _targetTile.Position_grid;
+            _combatBoardManager.GetTile(tilePosition).UnitOnTile = this;
+            _actionTargetTiles.ForEach(e =>e.IndicatorTile.SetIndicator(IndicatorTile.Indicator.Default));
+            EndTurn();
+        }
+
+        if (_targetTile != null)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, _targetTile.Position_world, Time.deltaTime*3);
+        }
+    }
     private void ActionSelect()
     {
         if (SelectedAbility == null || SelectedAbilityChangedThisFrame )
@@ -324,35 +478,69 @@ public class Player : Unit
             }
             SelectedAbilityChangedThisFrame = false;
         }
-        else if (SelectedAbility.Ranged && moveActive)
+        else if (SelectedAbility.Ranged && moveActive && !uienabled && Time.time - _timeSinceLastMove > 1f/_inputPollRate)
         {
+            _timeSinceLastMove = Time.time;
             foreach (var tile in _actionTargetTiles)
             {
-                tile.IndicatorTile.SetIndicator(IndicatorTile.Indicator.Enemy);
+                tile.IndicatorTile.SetIndicator(SelectedAbility.targetType switch
+                {
+                    Ability.TargetType.self => IndicatorTile.Indicator.Enemy,
+                    Ability.TargetType.ally => IndicatorTile.Indicator.Ally,
+                    Ability.TargetType.ground => IndicatorTile.Indicator.WithinReach,
+                    Ability.TargetType.enemy => IndicatorTile.Indicator.Enemy,
+                    Ability.TargetType.pet => IndicatorTile.Indicator.Ally,
+                    _ => throw new ArgumentOutOfRangeException(),
+                });
             }
 
             var nearestAngleTile =
-                _combatBoardManager.Pathfinder.FindNearestAngleTile(_targetTile, moveValue, _actionTargetTiles.Where(e => e != _targetTile).ToList(), 25f);
+                _combatBoardManager.Pathfinder.FindNearestAngleTile(_targetTile, moveValue, _actionTargetTiles.Where(e => e != _targetTile).ToList(), 25f,SelectedAbility.targetType != Ability.TargetType.ground);
             _targetTile = nearestAngleTile != null ? nearestAngleTile : _targetTile;
             if (_targetTile != null)
             {
                 SetDirection(_targetTile);
-                _targetTile.IndicatorTile.SetIndicator(IndicatorTile.Indicator.SelectedEnemy);
+                _targetTile.IndicatorTile.SetIndicator(SelectedAbility.targetType switch
+                {
+                    Ability.TargetType.self => IndicatorTile.Indicator.SelectedAlly,
+                    Ability.TargetType.ally => IndicatorTile.Indicator.SelectedAlly,
+                    Ability.TargetType.ground => IndicatorTile.Indicator.ChosenPath,
+                    Ability.TargetType.enemy => IndicatorTile.Indicator.SelectedEnemy,
+                    Ability.TargetType.pet => IndicatorTile.Indicator.SelectedAlly,
+                    _ => throw new ArgumentOutOfRangeException(),
+                });
             }
         }
-        else if (moveActive)
+        else if (moveActive && !uienabled && Time.time - _timeSinceLastMove > 1f/_inputPollRate)
         {
+            _timeSinceLastMove = Time.time;
             var nearestAngleTile =
-                _combatBoardManager.Pathfinder.FindNearestAngleTile(_combatBoardManager.GetTile(tilePosition), moveValue, _actionTargetTiles.Where(e => e != _targetTile).ToList(), 25f);
+                _combatBoardManager.Pathfinder.FindNearestAngleTile(_combatBoardManager.GetTile(tilePosition), moveValue, _actionTargetTiles.Where(e => e != _targetTile).ToList(), 25f, SelectedAbility.targetType != Ability.TargetType.ground);
             foreach (var tile in _actionTargetTiles)
             {
                 if (tile == nearestAngleTile)
                 {
                     SetDirection(_targetTile);
-                    tile.IndicatorTile.SetIndicator(IndicatorTile.Indicator.SelectedEnemy);
+                    tile.IndicatorTile.SetIndicator(SelectedAbility.targetType switch
+                    {
+                        Ability.TargetType.self => IndicatorTile.Indicator.SelectedAlly,
+                        Ability.TargetType.ally => IndicatorTile.Indicator.SelectedAlly,
+                        Ability.TargetType.ground => IndicatorTile.Indicator.ChosenPath,
+                        Ability.TargetType.enemy => IndicatorTile.Indicator.SelectedEnemy,
+                        Ability.TargetType.pet => IndicatorTile.Indicator.SelectedAlly,
+                        _ => throw new ArgumentOutOfRangeException(),
+                    });
                     continue;
                 }
-                tile.IndicatorTile.SetIndicator(IndicatorTile.Indicator.Enemy);
+                tile.IndicatorTile.SetIndicator(SelectedAbility.targetType switch
+                {
+                    Ability.TargetType.self => IndicatorTile.Indicator.Enemy,
+                    Ability.TargetType.ally => IndicatorTile.Indicator.Ally,
+                    Ability.TargetType.ground => IndicatorTile.Indicator.WithinReach,
+                    Ability.TargetType.enemy => IndicatorTile.Indicator.Enemy,
+                    Ability.TargetType.pet => IndicatorTile.Indicator.Ally,
+                    _ => throw new ArgumentOutOfRangeException(),
+                });
             }
         }
     }
@@ -361,14 +549,23 @@ public class Player : Unit
     {
         if (SelectedAbility.Ranged)
         {
-            var enemies = FindObjectsOfType<Unit>().ToList().Where(e => e.AllyFaction == Faction.AI && e.Alive).ToList();
-            _actionTargetTiles = enemies.Select(e => _combatBoardManager.GetTile(e.tilePosition)).ToList();
-            _targetTile = _actionTargetTiles.FirstOrDefault();
+            var moveeffect = SelectedAbility.Effects.FirstOrDefault(e => e.effectType == Effect.EffectType.Move);
+            if (moveeffect != null)
+            {
+                _actionTargetTiles = _combatBoardManager.Pathfinder.FindRangedNeighbours(_combatBoardManager.GetTile(tilePosition), moveeffect.MinimumAmount);
+                _actionTargetTiles.RemoveAll(e => e.UnitOnTile != null);
+                _targetTile = _actionTargetTiles.FirstOrDefault();
+            }
+            else
+            {
+                var targets = FindObjectsOfType<Unit>().ToList().Where(e => e.AllyFaction == _EnemyFaction && e.Alive).ToList();
+                _actionTargetTiles = targets.Select(e => _combatBoardManager.GetTile(e.tilePosition)).ToList();
+                _targetTile = _actionTargetTiles.FirstOrDefault();
+            }
             return;
         }
         _actionTargetTiles = _combatBoardManager.Pathfinder.Neighbors(_combatBoardManager.GetTile(tilePosition)).Where(e => e.UnitOnTile != null && e.UnitOnTile.AllyFaction == Faction.AI && e.UnitOnTile.Alive).ToList();
         _targetTile = _actionTargetTiles.FirstOrDefault();
-        print(_targetTile);
     }
     private void MoveGridIndicator()
     {
@@ -436,8 +633,9 @@ public class Player : Unit
             animator.SetBool(WalkingString,false);
             _currentPath.Clear();
             ActionSelectPhaseActive = true;
-            
-            EnableUIInput(true);
+            Destroy(_MoveSource.gameObject);
+
+            EnableUIInput(true,FindObjectsOfType<AbilitySlot>().First(a => a._slottedAbility == abilities[0]).gameObject);
             return;
         }
 

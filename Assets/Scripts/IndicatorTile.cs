@@ -10,7 +10,7 @@ public class IndicatorTile : MonoBehaviour
     [SerializeField] private Sprite tileEnemy;
     [SerializeField] private Sprite tileSelectedEnemy;
     [SerializeField] private Sprite tileAlly;
-    
+    [SerializeField] private Sprite tileSelectedAlly;
     public enum Indicator
     {
         WithinReach,
@@ -18,6 +18,7 @@ public class IndicatorTile : MonoBehaviour
         Enemy,
         SelectedEnemy,
         Ally,
+        SelectedAlly,
         Default
     }
     public void SetIndicator(Indicator indicator)
@@ -29,6 +30,7 @@ public class IndicatorTile : MonoBehaviour
             Indicator.Enemy => tileEnemy,
             Indicator.SelectedEnemy => tileSelectedEnemy,
             Indicator.Ally => tileAlly,
+            Indicator.SelectedAlly => tileSelectedAlly,
             Indicator.Default => tileDefault,
             _ => throw new ArgumentOutOfRangeException(nameof(indicator), indicator, null)
         };

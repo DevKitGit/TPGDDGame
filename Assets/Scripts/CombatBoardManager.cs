@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Unity.Mathematics;
-using UnityEditor.Tilemaps;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 
 public class CombatBoardManager : MonoBehaviour
@@ -43,7 +37,7 @@ public class CombatBoardManager : MonoBehaviour
         board = new List<Tile>(_tileMapDimensions.x*_tileMapDimensions.y);
         _tileMap.origin.Set(Mathf.CeilToInt(_tileMapDimensions.x/2f)+1,Mathf.CeilToInt(_tileMapDimensions.y/2f)+1,0);
         //Make the pathfinding tiles
-
+        _tileMap.gameObject.GetComponent<TilemapRenderer>().enabled = false;
         for (int y = 0; y < _tileMapDimensions.y; y++)
         {
             for (int x = 0; x < _tileMapDimensions.x; x++)
@@ -54,7 +48,8 @@ public class CombatBoardManager : MonoBehaviour
                     board.Add(null);
                     continue;
                 }
-                var tileGO = Instantiate(_TilePrefab.gameObject, _tileMap.CellToWorld(new Vector3Int(x, y, 0)), quaternion.identity,gameObject.transform);
+                
+                var tileGO = Instantiate(_TilePrefab.gameObject, _tileMap.CellToWorld(new Vector3Int(x, y, 0)) + _tileMap.tileAnchor, quaternion.identity,gameObject.transform);
                 tileGO.GetComponent<SpriteRenderer>().sortingOrder = -1;
                 tileGO.name = $"Tile,{x},{y}";
                 board.Add(new Tile(new Vector3Int(x,y,0),_tileMap.CellToWorld(new Vector3Int(x, y, 0)),true,tileGO.GetComponent<IndicatorTile>()));

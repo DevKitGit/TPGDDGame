@@ -20,17 +20,19 @@ public class EventUI : MonoBehaviour
         _buttons.Reverse();
         _worldEvent = worldEvent;
         _image.sprite = worldEvent.sprite;
-        var buttonIndexReached = 0;
-        for (var i = 0; i < worldEvent.choices.Count; i++)
+        var choices =  worldEvent.choices.Where(e => e.choiceOption != Choice.ChoiceOptions.None).ToList();
+        foreach (var button in _buttons)
         {
-            _buttons[i].GetComponentInChildren<TextMeshProUGUI>().SetText("");
-            _buttons[i].gameObject.SetActive(false);
-
-            if (worldEvent.choices[i].choiceOption == Choice.ChoiceOptions.None) continue;
-            _buttons[buttonIndexReached].GetComponentInChildren<TextMeshProUGUI>().SetText(worldEvent.choices[worldEvent.choices.Count-1-i].choiceDescription);
-            _buttons[buttonIndexReached].gameObject.SetActive(true);
-            buttonIndexReached++;
+            button.GetComponentInChildren<TextMeshProUGUI>().SetText("");
+            button.gameObject.SetActive(false);
         }
+        for (var i = 0; i < choices.Count; i++)
+        {
+            _buttons[i].GetComponentInChildren<TextMeshProUGUI>().SetText(choices[choices.Count-i-1].choiceDescription);
+            _buttons[i].gameObject.SetActive(true);
+        }
+
+        InputManager.Instance.EventSystem.SetSelectedGameObject(_buttons.LastOrDefault(e => e.gameObject.activeInHierarchy)?.gameObject);
     }
     public void ButtonPressed(Button button)
     {

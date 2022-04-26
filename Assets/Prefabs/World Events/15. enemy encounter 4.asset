@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0d233e31a5c00044ad44b40f2484d66, type: 3}
+  m_Name: 15. enemy encounter 4
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: 034cc43c2c913334c8c9824e8e864983, type: 3}
+  choices:
+  - choiceOption: 0
+    choiceDescription: Fight
+  CombatTemplate: {fileID: 11400000, guid: e4f54b98b1a620e429bfbc3de05a2e62, type: 2}
+  nextEvent: {fileID: 0}
